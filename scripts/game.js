@@ -33,15 +33,26 @@ function imagesInit() {
     background.src = "/images/background.png";  
 }
 
-function gameSetup() {
-    
-}
-
 function gameInit() {
     playerInit();
     enemyInit();
     towerInit();
     imagesInit();
+    gameStart();
+}
+
+function playerHurt()
+{
+    playerHealth = playerHealth - 1;
+
+    if (playerHealth <= 0)
+    {
+        gameOver();
+    }
+}
+
+function gameStart() {
+    
 }
 
 function exit() {
