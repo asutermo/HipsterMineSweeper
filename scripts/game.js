@@ -41,6 +41,10 @@ function gameInit() {
     gameStart();
 }
 
+function gameStart() {
+    
+}
+
 function playerHurt()
 {
     playerHealth = playerHealth - 1;
@@ -51,8 +55,12 @@ function playerHurt()
     }
 }
 
-function gameStart() {
-    
+function enemyHurt() {
+
+}
+
+function enemyCreate() {
+
 }
 
 function exit() {
