@@ -33,6 +33,7 @@ function imagesInit() {
     background.src = "/images/background.png";  
 }
 
+//GAME
 function gameInit() {
     playerInit();
     enemyInit();
@@ -42,34 +43,10 @@ function gameInit() {
 }
 
 function gameStart() {
-    
-}
+    //if all images have loaded
+    if (background.complete)  {
 
-function playerHurt()
-{
-    playerHealth = playerHealth - 1;
-
-    if (playerHealth <= 0)
-    {
-        gameOver();
-    }
-}
-
-function enemyHurt() {
-
-
-}
-
-function enemyCreate() {
-
-}
-
-function towerCreate() {
-
-}
-
-function towerDelete() {
-    
+    }  
 }
 
 function exit() {
@@ -87,6 +64,40 @@ function gameOver() {
 function pause() {
 
 }
+
+
+//PLAYER
+function playerHurt()
+{
+    playerHealth = playerHealth - 1;
+
+    if (playerHealth <= 0)
+    {
+        gameOver();
+    }
+}
+
+
+//ENEMY
+function enemyHurt() {
+
+
+}
+
+function enemyCreate() {
+
+}
+
+//TOWER
+function towerCreate() {
+
+}
+
+function towerDelete() {
+
+}
+
+
 
 function update() {
 
