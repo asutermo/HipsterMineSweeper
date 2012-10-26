@@ -57,10 +57,19 @@ function playerHurt()
 
 function enemyHurt() {
 
+
 }
 
 function enemyCreate() {
 
+}
+
+function towerCreate() {
+
+}
+
+function towerDelete() {
+    
 }
 
 function exit() {
