@@ -1,46 +1,37 @@
+
+
+
+
+function playerInit() {
+    var playerHealth = 10;
+    var playerCredits = 50;
+}
+
+function enemyInit() {
+    var maxEnemyCount = 25;
+    var creditsPerEnemy = [];
+    var healthPerEnemy = [];s    
+}
+
+function towerInit() {
+
+}
+
+function mapInit() {
+
+}
+
+function otherInit() {
+
+}
+
+function imagesInit() {
+    var background = new Image();
+    background.src = "../images/background.png";  
+}
+
 function gameSetup() {
-    //screen settings
-    var GAME_WIDTH = 700;
-    var GAME_HEIGHT = 700;
-    var GAME_FPS = 60;
-
-    var GAME_STATE = {
-        WON = 'won',
-        PLAY = 'play',
-        LOST = 'lost',
-        PAUSE = 'pause'   
-    };
-
-    var map = {
-        width: GAME_WIDTH,
-        height: GAME_HEIGHT;   
-    };
-
-    //set up mouse
-    var mousePos = {
-        x: 0,
-        y: 0,
-        isDown: false,
-    };
-
-    //set up img vars
     
-
-    //set up game vars
-    var gameInPlay = false;
-    var gamePaused = false;
-    var finished = false;
-    var towerArray = [];
-    var enemyArray = [];
-    var player;
-    var level;
-    var time;
-
-    //button vars
-    var startBut;
-    var pauseBut;
-
-
 }
 
 function gameInit() {
