@@ -30,7 +30,7 @@ function imagesInit() {
     var normalTower = new Image();
     var aoeTower = new Image();
 
-    background.src = "../images/background.png";  
+    background.src = "/images/background.png";  
 }
 
 function gameSetup() {
@@ -38,7 +38,10 @@ function gameSetup() {
 }
 
 function gameInit() {
-
+    playerInit();
+    enemyInit();
+    towerInit();
+    imagesInit();
 }
 
 function exit() {
