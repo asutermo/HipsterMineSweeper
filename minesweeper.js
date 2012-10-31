@@ -1,8 +1,8 @@
 	var gameBoard = {
-			rows: 25,
-			cols: 25,
-			width: 75,
-			height: 75,
+			rows: 10,
+			cols: 10,
+			width: 50,
+			height: 50,
 			fps: 30
 	};
 
