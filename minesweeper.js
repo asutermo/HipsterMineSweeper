@@ -8,16 +8,15 @@ var gameBoard = {
 		fps: 30
 };
 
+var canvas;
 var canvasDrawContext;
 var mouseXPos;
 var mouseYPos;
 var gridUnit;
 
 function init() {
-	var canvas = document.getElementById("game_canvas");
+	canvas = document.getElementById("game_canvas");
 	canvasDrawContext = canvas.getContext("2d"); 
-
-	document.addEventListener("mouseclick", click, false);
 
 	gridUnit = new Image();
 	gridUnit.src = "images/starbucks_cup.png";
@@ -36,10 +35,3 @@ function drawGrid() {
 		}
 	}
 }	
-function click(e) {
-	mouseXPos = e.pageX;
-	mouseYPos = e.pageY;
-	console.log(mouseXPos + ", " + mouseYPos);
-}
-
-
