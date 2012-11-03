@@ -82,11 +82,11 @@ function buildGrid() {
         var cell = {};
         if(i >= NUM_MINES) {
             cell.code = SAFE;
-            cell.isBomb = false;
+            cell.isMine = false;
         }
         else {
             cell.code = SAFE;
-            cell.isBomb = true;
+            cell.isMine = true;
         }
         cell.isFlag = false;            
         cell.valid = true;
@@ -125,6 +125,8 @@ function draw() {
     }
 }
 
+
+
 function checkCellValidity(e, x, y) {
 	if(e.valid) {
         if(e.isFlag) {
@@ -135,11 +137,12 @@ function checkCellValidity(e, x, y) {
         }
 	}
     else {
-        if(e.isBomb) {
+        if(e.isMine) {
             canvasContext.drawImage(bomb, x, y, cellWidth, cellHeight);
         }
         else {
             canvasContext.drawImage(invalid, x, y, cellWidth, cellHeight);
+            console.log(cell.code);
             /*if(cell.code != SAFE) {
                     //canvasContext.fillStyle = COLORS.numbers[cell.code];
                     canvasContext.fillText(cell.code, xPos + cellWidth/2 - fontSize/4, yPos + cellHeight/2 + fontSize/4);
@@ -161,26 +164,26 @@ function updateGrid(e) {
     callMouseAction(e);
     
 
-    var win = checkWin();
-    if(win) {
+    var didUserWin = checkWin();
+    if(didUserWin) {
         finishBoard();
     }
 
     draw();
     
     if(!gridValid) {
-        alert("You died in a horrible bombing incident.");
+        alert("Hipster Scum! You lose!");
         initGrid();
     }
-    else if(win) {
-        alert("You survived sweeping through a mine field.");
+    else if(didUserWin) {
+        alert("WINNN!");
         initGrid();
     }
 }
 
 function callMouseAction(e) {
 	if(e.button == 0) {
-    	excavate();
+    	checkLocation();
     }
     else if(e.button == 2) {
         setFlag();
@@ -205,7 +208,7 @@ function setFlag() {
 	}
 }
 
-function excavate() {
+function checkLocation() {
         var cellNum = clickedCell();
         if(cellNum != null) {
                 if(cells[cellNum].isFlag) {
@@ -213,9 +216,9 @@ function excavate() {
                 }
                 else {
                         cells[cellNum].valid = false;
-                        if(!cells[cellNum].isBomb) {
+                        if(!cells[cellNum].isMine) {
                                 var neighbours = getNeighbours(cellNum);
-                                cells[cellNum].code = getBombCount(neighbours);
+                                cells[cellNum].code = findRemainingMines(neighbours);
                                 if(cells[cellNum].code == SAFE) {
                                         expand(neighbours);
                                 }
@@ -250,7 +253,7 @@ function clickedCell() {
 function checkWin() {
         var win = true;
         for(var i = 0; i < cells.length; i++) {
-                if(cells[i].valid && !cells[i].isBomb) {
+                if(cells[i].valid && !cells[i].isMine) {
                         win = false;
                         break;
                 }
@@ -262,7 +265,7 @@ function checkWin() {
 function finishBoard() {
         flags = NUM_MINES;
         for(var i = 0; i < cells.length; i++) {
-                if(cells[i].isBomb) {
+                if(cells[i].isMine) {
                         cells[i].isFlag = true;
                 }
         }
@@ -308,31 +311,31 @@ function getNeighbours(index) {
         return neighbours;
 }
 
-function getBombCount(arr) {
-        var bombCount = 0;
+function findRemainingMines(arr) {
+        var numMines = 0;
         for(var i = 0; i < arr.length; i++) {
-                if(cells[arr[i]].isBomb) {
-                        bombCount++;
+                if(cells[arr[i]].isMine) {
+                        numMines++;
                 }
         }
-        return bombCount;
+        return numMines;
 }
 
 function expand(arr) {
-        for(var i = 0; i < arr.length; i++) {
-                var neighbours = getNeighbours(arr[i]);
-                if(cells[arr[i]].valid && getBombCount(neighbours) == SAFE) {
-                        cells[arr[i]].valid = false;
-                        expand(neighbours);
-                }
-                else {
-                        cells[arr[i]].valid = false;
-                        cells[arr[i]].code = getBombCount(neighbours);
-                }
+    for(var i = 0; i < arr.length; i++) {
+        var neighbours = getNeighbours(arr[i]);
+        if(cells[arr[i]].valid && findRemainingMines(neighbours) == SAFE) {
+                cells[arr[i]].valid = false;
+                expand(neighbours);
         }
+        else {
+                cells[arr[i]].valid = false;
+                cells[arr[i]].code = findRemainingMines(neighbours);
+        }
+    }
 }
 
 function shuffleArray(o){
-        for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-        return o;
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
 }
