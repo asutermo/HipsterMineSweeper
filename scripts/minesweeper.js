@@ -45,6 +45,7 @@ function initGrid() {
     };
     gridValid = true;
     flags = 0;
+    buildGridLayout();
     buildGrid();
     draw();
 }
@@ -54,8 +55,8 @@ function setDifficulty(e) {
 	initGrid();
 }
 
-function buildGrid() {
-    switch(DIFFICULTY) {
+function buildGridLayout() {
+	switch(DIFFICULTY) {
         case 1:
             ROWS = 10;
             COLS = 10;
@@ -71,7 +72,11 @@ function buildGrid() {
             COLS = 30;
             NUM_MINES = 99;
             break;
-    }
+    }	
+}
+
+function buildGrid() {
+    
     cellWidth = Math.floor(canvas.width / COLS);
     cellHeight = Math.floor(canvas.height / ROWS);
     gridWidth = cellWidth * COLS;
@@ -93,7 +98,8 @@ function buildGrid() {
         cells.push(cell);
     }
     
-    cells = shuffleArray(cells);
+    //cells = shuffleArray(cells);
+    cells.shuffle();
 
     var xPos = 0;
     var yPos = 0;
@@ -335,7 +341,14 @@ function expand(arr) {
     }
 }
 
-function shuffleArray(o){
-    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
+Array.prototype.shuffle = function()
+{
+	var i = this.length, j, temp;
+	while ( --i )
+	{
+		j = Math.floor( Math.random() * (i - 1) );
+		temp = this[i];
+		this[i] = this[j];
+		this[j] = temp;
+	}
 }
