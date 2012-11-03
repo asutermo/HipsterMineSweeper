@@ -31,10 +31,10 @@ flag.src = "./images/background.png";
 window.onload = init;
 
 function init() {
-        canvas = document.getElementById("game_canvas");
-        canvasContext = canvas.getContext("2d");
-        initGrid();
-        canvas.onmouseup = updateGrid;
+    canvas = document.getElementById("game_canvas");
+    canvasContext = canvas.getContext("2d");
+    initGrid();
+    canvas.onmouseup = updateGrid;
 }
 
 function initGrid() {
@@ -49,19 +49,9 @@ function initGrid() {
     draw();
 }
 
-function setEasy() {
-    DIFFICULTY = 1;
-    initGrid();
-}
-
-function setMedium() {
-    DIFFICULTY = 2;
-    initGrid();
-}
-
-function setHard() {
-    DIFFICULTY = 3;
-    initGrid();
+function setDifficulty(e) {
+	DIFFICULTY = e;
+	initGrid();
 }
 
 function buildGrid() {

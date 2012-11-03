@@ -8,20 +8,20 @@
 </head>
 
 <body>
-		 <div id="page-minesweeper">
-            <input type="button" value="Easy" onclick="setEasy()">
-            <input type="button" value="Medium" onclick="setMedium()">
-            <input type="button" value="Hard" onclick="setHard()">
-            <br>
-            <label><strong>Mines: </strong></label>
-            <label id="flags">0</label>
-            <label>/</label>
-            <label id="mines">10</label>
-            <br>
-  			<canvas id="game_canvas" height="1280" width="960" oncontextmenu="return false;">
-        		Y u no use proper browser?
-			</canvas>
-		</div>	
+	 <div>
+	    <input type="button" value="Easy" onclick="setDifficulty(1)">
+	    <input type="button" value="Medium" onclick="setDifficulty(2)">
+	    <input type="button" value="Hard" onclick="setDifficulty(3)">
+	    <br>
+	    <label><strong>Mines: </strong></label>
+	    <label id="flags">0</label>
+	    <label>/</label>
+	    <label id="mines">10</label>
+	    <br>
+			<canvas id="game_canvas" height="1280" width="960" oncontextmenu="return false;">
+			Y u no use proper browser?
+		</canvas>
+	</div>	
 	<script src="scripts/minesweeper.js"></script>
     
 </body>
