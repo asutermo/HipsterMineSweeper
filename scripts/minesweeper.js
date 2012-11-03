@@ -1,9 +1,9 @@
-var ROWS;
-var COLS;
-var NUM_MINES;
+var rows;
+var cols;
+var minesOnBoard;
 
-var DIFFICULTY = 1;
-var SAFE = 0;
+var difficulty = 1;
+var notAMine = 0;
 
 var canvas;
 var canvasContext;
@@ -15,26 +15,32 @@ var cellHeight;
 var gridWidth;
 var gridHeight;
 var gridValid;
-var fontSize;
 
 var flags;
 
-var unknown = new Image();
-unknown.src = "./images/starbucks_tower.png";
-var bomb = new Image();
-bomb.src = "./images/radio_tower.png";
-var invalid = new Image();
-invalid.src = "./images/starbucks_cup.png";
-var flag = new Image();
-flag.src = "./images/background.png";
-
+var unknown;
+var mine;
+var flag;
+var invalid;
 window.onload = init;
 
 function init() {
     canvas = document.getElementById("game_canvas");
     canvasContext = canvas.getContext("2d");
+    initImages();
     initGrid();
     canvas.onmouseup = updateGrid;
+}
+
+function initImages() {
+	unknown = new Image();
+	unknown.src = "./images/starbucks_tower.png";
+	mine = new Image();
+	mine.src = "./images/radio_tower.png";
+	invalid = new Image();
+	invalid.src = "./images/starbucks_cup.png";
+	flag = new Image();
+	flag.src = "./images/background.png";
 }
 
 function initGrid() {
@@ -51,46 +57,46 @@ function initGrid() {
 }
 
 function setDifficulty(e) {
-	DIFFICULTY = e;
+	difficulty = e;
 	initGrid();
 }
 
 function buildGridLayout() {
-	switch(DIFFICULTY) {
+	switch(difficulty) {
         case 1:
-            ROWS = 10;
-            COLS = 10;
-            NUM_MINES = 10;
+            rows = 10;
+            cols = 10;
+            minesOnBoard = 10;
             break;
         case 2:
-            ROWS = 16;
-            COLS = 16;
-            NUM_MINES = 40;
+            rows = 16;
+            cols = 16;
+            minesOnBoard = 40;
             break;
         case 3:
-            ROWS = 16;
-            COLS = 30;
-            NUM_MINES = 99;
+            rows = 16;
+            cols = 30;
+            minesOnBoard = 99;
             break;
     }	
 }
 
 function buildGrid() {
     
-    cellWidth = Math.floor(canvas.width / COLS);
-    cellHeight = Math.floor(canvas.height / ROWS);
-    gridWidth = cellWidth * COLS;
-    gridHeight = cellHeight * ROWS;
-    document.getElementById("mines").innerHTML = NUM_MINES;
+    cellWidth = Math.floor(canvas.width / cols);
+    cellHeight = Math.floor(canvas.height / rows);
+    gridWidth = cellWidth * cols;
+    gridHeight = cellHeight * rows;
+    document.getElementById("mines").innerHTML = minesOnBoard;
 
-    for(var i = 0; i < ROWS * COLS; i++) {
+    for(var i = 0; i < rows * cols; i++) {
         var cell = {};
-        if(i >= NUM_MINES) {
-            cell.code = SAFE;
+        if(i >= minesOnBoard) {
+            cell.code = notAMine;
             cell.isMine = false;
         }
         else {
-            cell.code = SAFE;
+            cell.code = notAMine;
             cell.isMine = true;
         }
         cell.isFlag = false;            
@@ -144,12 +150,12 @@ function checkCellValidity(e, x, y) {
 	}
     else {
         if(e.isMine) {
-            canvasContext.drawImage(bomb, x, y, cellWidth, cellHeight);
+            canvasContext.drawImage(mine, x, y, cellWidth, cellHeight);
         }
         else {
             canvasContext.drawImage(invalid, x, y, cellWidth, cellHeight);
             console.log(e.code);
-            /*if(cell.code != SAFE) {
+            /*if(cell.code != notAMine) {
                     //canvasContext.fillStyle = COLORS.numbers[cell.code];
                     canvasContext.fillText(cell.code, xPos + cellWidth/2 - fontSize/4, yPos + cellHeight/2 + fontSize/4);
             }*/
@@ -225,7 +231,7 @@ function checkLocation() {
                         if(!cells[cellNum].isMine) {
                                 var neighbours = getNeighbours(cellNum);
                                 cells[cellNum].code = findRemainingMines(neighbours);
-                                if(cells[cellNum].code == SAFE) {
+                                if(cells[cellNum].code == notAMine) {
                                         expand(neighbours);
                                 }
                         }
@@ -269,7 +275,7 @@ function checkWin() {
 }
 
 function finishBoard() {
-        flags = NUM_MINES;
+        flags = minesOnBoard;
         for(var i = 0; i < cells.length; i++) {
                 if(cells[i].isMine) {
                         cells[i].isFlag = true;
@@ -279,38 +285,38 @@ function finishBoard() {
 
 function getNeighbours(index) {
         var neighbours = [];
-        var newIndex = index - COLS - 1;
-        if(index % COLS != 0 && newIndex >= 0) {
+        var newIndex = index - cols - 1;
+        if(index % cols != 0 && newIndex >= 0) {
                 neighbours.push(newIndex);
         }
-        newIndex = index - COLS;
+        newIndex = index - cols;
         if(newIndex >= 0) {
                 neighbours.push(newIndex);
         }
-        newIndex = index - COLS + 1;
-        if(index % COLS != COLS - 1 && newIndex >= 0) {
+        newIndex = index - cols + 1;
+        if(index % cols != cols - 1 && newIndex >= 0) {
                 neighbours.push(newIndex);
         }
         
         newIndex = index - 1;
-        if(index % COLS != 0 && newIndex >= 0) {
+        if(index % cols != 0 && newIndex >= 0) {
                 neighbours.push(newIndex);
         }
         newIndex = index + 1;
-        if(index % COLS != COLS - 1 && newIndex < cells.length) {
+        if(index % cols != cols - 1 && newIndex < cells.length) {
                 neighbours.push(newIndex);
         }
         
-        newIndex = index + COLS - 1;
-        if(index % COLS != 0 && newIndex < cells.length) {
+        newIndex = index + cols - 1;
+        if(index % cols != 0 && newIndex < cells.length) {
                 neighbours.push(newIndex);
         }
-        newIndex = index + COLS;
+        newIndex = index + cols;
         if(newIndex < cells.length) {
                 neighbours.push(newIndex);
         }
-        newIndex = index + COLS + 1;
-        if(index % COLS != COLS - 1 && newIndex < cells.length) {
+        newIndex = index + cols + 1;
+        if(index % cols != cols - 1 && newIndex < cells.length) {
                 neighbours.push(newIndex);
         }
 
@@ -330,7 +336,7 @@ function findRemainingMines(arr) {
 function expand(arr) {
     for(var i = 0; i < arr.length; i++) {
         var neighbours = getNeighbours(arr[i]);
-        if(cells[arr[i]].valid && findRemainingMines(neighbours) == SAFE) {
+        if(cells[arr[i]].valid && findRemainingMines(neighbours) == notAMine) {
                 cells[arr[i]].valid = false;
                 expand(neighbours);
         }
