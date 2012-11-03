@@ -142,7 +142,7 @@ function checkCellValidity(e, x, y) {
         }
         else {
             canvasContext.drawImage(invalid, x, y, cellWidth, cellHeight);
-            console.log(cell.code);
+            console.log(e.code);
             /*if(cell.code != SAFE) {
                     //canvasContext.fillStyle = COLORS.numbers[cell.code];
                     canvasContext.fillText(cell.code, xPos + cellWidth/2 - fontSize/4, yPos + cellHeight/2 + fontSize/4);
