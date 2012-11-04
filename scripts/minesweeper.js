@@ -16,15 +16,15 @@ var canvas;
 var canvasContext;
 var mouse;
 
-//grid elements
+//board elements
 var rows;
 var cols;
-var cells;
-var cellWidth;
-var cellHeight;
-var gridWidth;
-var gridHeight;
-var gridValid;
+var blocks;
+var blockWidth;
+var blockHeight;
+var boardWidth;
+var boardHeight;
+var gamePlayable;
 var minesOnBoard;
 var flags;
 
@@ -46,7 +46,7 @@ function init() {
     canvasContext = canvas.getContext("2d");
     initImages();
     initGrid();
-    canvas.onmouseup = updateGrid;
+    canvas.onmouseup = update;
 }
 
 function initImages() {
@@ -61,12 +61,12 @@ function initImages() {
 }
 
 function initGrid() {
-    cells = [];
+    blocks = [];
     mouse = {
     	x: 0, 
     	y: 0
     };
-    gridValid = true;
+    gamePlayable = true;
     flags = 0;
     buildGridLayout();
     buildGrid();
@@ -103,56 +103,56 @@ function buildGridLayout() {
 
 function buildGrid() {
     
-    cellWidth = Math.floor(canvas.width / cols);
-    cellHeight = Math.floor(canvas.height / rows);
-    gridWidth = cellWidth * cols;
-    gridHeight = cellHeight * rows;
+    blockWidth = Math.floor(canvas.width / cols);
+    blockHeight = Math.floor(canvas.height / rows);
+    boardWidth = blockWidth * cols;
+    boardHeight = blockHeight * rows;
     document.getElementById("mines").innerHTML = minesOnBoard;
 
     for(var i = 0; i < rows * cols; i++) {
-        var cell = {};
+        var block = {};
         if(i >= minesOnBoard) {
-            cell.code = notAMine;
-            cell.isMine = false;
+            block.code = notAMine;
+            block.isMine = false;
         }
         else {
-            cell.code = notAMine;
-            cell.isMine = true;
+            block.code = notAMine;
+            block.isMine = true;
         }
-        cell.isFlag = false;            
-        cell.valid = true;
-        cells.push(cell);
+        block.isFlag = false;            
+        block.valid = true;
+        blocks.push(block);
     }
     
-    //cells = shuffleArray(cells);
-    cells.shuffle();
+    //blocks = shuffleArray(blocks);
+    blocks.shuffle();
 
     var xPos = 0;
     var yPos = 0;
-    for(var i = 0; i < cells.length; i++) {
-	    cells[i].x = xPos;
-	    cells[i].y = yPos;
-	    xPos += cellWidth;
-	    if(xPos >= canvas.gridWidth) {
+    for(var i = 0; i < blocks.length; i++) {
+	    blocks[i].x = xPos;
+	    blocks[i].y = yPos;
+	    xPos += blockWidth;
+	    if(xPos >= canvas.boardWidth) {
             xPos = 0;
-            yPos += cellHeight;
+            yPos += blockHeight;
 	    }
     }
 }
 
 function draw() {
     document.getElementById("flags").innerHTML = flags;
-    canvasContext.clearRect(0, 0, gridWidth, gridHeight);
+    canvasContext.clearRect(0, 0, boardWidth, boardHeight);
     var xPos = 0;
     var yPos = 0;
-    for(var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        checkCellValidity(cell, xPos, yPos);
+    for(var i = 0; i < blocks.length; i++) {
+        var block = blocks[i];
+        checkCellValidity(block, xPos, yPos);
        
-        xPos += cellWidth;
-        if(xPos >= gridWidth) {
+        xPos += blockWidth;
+        if(xPos >= boardWidth) {
                 xPos = 0;
-                yPos += cellHeight;
+                yPos += blockHeight;
         }
     }
 }
@@ -162,22 +162,22 @@ function draw() {
 function checkCellValidity(e, x, y) {
 	if(e.valid) {
         if(e.isFlag) {
-            canvasContext.drawImage(flag, x, y, cellWidth, cellHeight);
+            canvasContext.drawImage(flag, x, y, blockWidth, blockHeight);
         }
         else {
-			canvasContext.drawImage(unknown, x, y, cellWidth, cellHeight);
+			canvasContext.drawImage(unknown, x, y, blockWidth, blockHeight);
         }
 	}
     else {
         if(e.isMine) {
-            canvasContext.drawImage(mine, x, y, cellWidth, cellHeight);
+            canvasContext.drawImage(mine, x, y, blockWidth, blockHeight);
         }
         else {
-            canvasContext.drawImage(invalid, x, y, cellWidth, cellHeight);
+            canvasContext.drawImage(invalid, x, y, blockWidth, blockHeight);
             console.log(e.code);
-            /*if(cell.code != notAMine) {
-                    //canvasContext.fillStyle = COLORS.numbers[cell.code];
-                    canvasContext.fillText(cell.code, xPos + cellWidth/2 - fontSize/4, yPos + cellHeight/2 + fontSize/4);
+            /*if(block.code != notAMine) {
+                    //canvasContext.fillStyle = COLORS.numbers[block.code];
+                    canvasContext.fillText(block.code, xPos + blockWidth/2 - fontSize/4, yPos + blockHeight/2 + fontSize/4);
             }*/
         }
 	}	
@@ -190,10 +190,10 @@ function getMousePos(e) {
     mouse.y =  Math.floor(e.clientY - rect.top - root.scrollTop);
 }
 
-function updateGrid(e) {
+function update(e) {
 
     getMousePos(e);
-    callMouseAction(e);
+    checkMouseClick(e);
     
 
     var didUserWin = checkWin();
@@ -203,7 +203,7 @@ function updateGrid(e) {
 
     draw();
     
-    if(!gridValid) {
+    if(!gamePlayable) {
         alert("Hipster Scum! You lose!");
         initGrid();
     }
@@ -213,24 +213,22 @@ function updateGrid(e) {
     }
 }
 
-function callMouseAction(e) {
+function checkMouseClick(e) {
 	if(e.button == 0) {
     	checkLocation();
     }
     else if(e.button == 2) {
-        setFlag();
+        placeFlag();
     }
-    else {
-        return;
-    }	
+    return;	
 }
 
-function setFlag() {
-	var cellNum = clickedCell();
-	if(cellNum != null) {
-        if(cells[cellNum].valid) {
-            cells[cellNum].isFlag = !cells[cellNum].isFlag;
-            if(cells[cellNum].isFlag) {
+function placeFlag() {
+	var blockNum = clickedCell();
+	if(blockNum != null) {
+        if(blocks[blockNum].valid) {
+            blocks[blockNum].isFlag = !blocks[blockNum].isFlag;
+            if(blocks[blockNum].isFlag) {
                     flags++;
             }
             else {
@@ -241,22 +239,22 @@ function setFlag() {
 }
 
 function checkLocation() {
-    var cellNum = clickedCell();
-    if(cellNum != null) {
-            if(cells[cellNum].isFlag) {
+    var blockNum = clickedCell();
+    if(blockNum != null) {
+            if(blocks[blockNum].isFlag) {
                     return;
             }
             else {
-                    cells[cellNum].valid = false;
-                    if(!cells[cellNum].isMine) {
-                            var neighbours = getNeighbours(cellNum);
-                            cells[cellNum].code = findRemainingMines(neighbours);
-                            if(cells[cellNum].code == notAMine) {
+                    blocks[blockNum].valid = false;
+                    if(!blocks[blockNum].isMine) {
+                            var neighbours = getNeighbours(blockNum);
+                            blocks[blockNum].code = findRemainingMines(neighbours);
+                            if(blocks[blockNum].code == notAMine) {
                                     expand(neighbours);
                             }
                     }
                     else {
-                            gridValid = false;
+                            gamePlayable = false;
                     }
             }
     }
@@ -266,17 +264,17 @@ function clickedCell() {
     var xPos = 0;
     var yPos = 0;
 
-    for(var i = 0; i < cells.length; i++) {
-            if(mouse.x < xPos || mouse.x > (xPos + cellWidth) || mouse.y < yPos || mouse.y > (yPos + cellHeight)) {
-            }
-            else {
-                    return i;
-            }
-            xPos += cellWidth;
-            if(xPos >= gridWidth) {
-                    xPos = 0;
-                    yPos += cellHeight;
-            }
+    for(var i = 0; i < blocks.length; i++) {
+        if(mouse.x < xPos || mouse.x > (xPos + blockWidth) || mouse.y < yPos || mouse.y > (yPos + blockHeight)) {
+        }
+        else {
+                return i;
+        }
+        xPos += blockWidth;
+        if(xPos >= boardWidth) {
+            xPos = 0;
+            yPos += blockHeight;
+        }
     }
 
     return null;
@@ -284,8 +282,8 @@ function clickedCell() {
 
 function checkWin() {
     var win = true;
-    for(var i = 0; i < cells.length; i++) {
-            if(cells[i].valid && !cells[i].isMine) {
+    for(var i = 0; i < blocks.length; i++) {
+            if(blocks[i].valid && !blocks[i].isMine) {
                     win = false;
                     break;
             }
@@ -296,9 +294,9 @@ function checkWin() {
 
 function finishBoard() {
     flags = minesOnBoard;
-    for(var i = 0; i < cells.length; i++) {
-            if(cells[i].isMine) {
-                    cells[i].isFlag = true;
+    for(var i = 0; i < blocks.length; i++) {
+            if(blocks[i].isMine) {
+                    blocks[i].isFlag = true;
             }
     }
 }
@@ -323,20 +321,20 @@ function getNeighbours(index) {
             neighbours.push(newIndex);
     }
     newIndex = index + 1;
-    if(index % cols != cols - 1 && newIndex < cells.length) {
+    if(index % cols != cols - 1 && newIndex < blocks.length) {
             neighbours.push(newIndex);
     }
     
     newIndex = index + cols - 1;
-    if(index % cols != 0 && newIndex < cells.length) {
+    if(index % cols != 0 && newIndex < blocks.length) {
             neighbours.push(newIndex);
     }
     newIndex = index + cols;
-    if(newIndex < cells.length) {
+    if(newIndex < blocks.length) {
             neighbours.push(newIndex);
     }
     newIndex = index + cols + 1;
-    if(index % cols != cols - 1 && newIndex < cells.length) {
+    if(index % cols != cols - 1 && newIndex < blocks.length) {
             neighbours.push(newIndex);
     }
 
@@ -346,7 +344,7 @@ function getNeighbours(index) {
 function findRemainingMines(arr) {
         var numMines = 0;
         for(var i = 0; i < arr.length; i++) {
-                if(cells[arr[i]].isMine) {
+                if(blocks[arr[i]].isMine) {
                         numMines++;
                 }
         }
@@ -356,13 +354,13 @@ function findRemainingMines(arr) {
 function expand(arr) {
     for(var i = 0; i < arr.length; i++) {
         var neighbours = getNeighbours(arr[i]);
-        if(cells[arr[i]].valid && findRemainingMines(neighbours) == notAMine) {
-                cells[arr[i]].valid = false;
+        if(blocks[arr[i]].valid && findRemainingMines(neighbours) == notAMine) {
+                blocks[arr[i]].valid = false;
                 expand(neighbours);
         }
         else {
-                cells[arr[i]].valid = false;
-                cells[arr[i]].code = findRemainingMines(neighbours);
+                blocks[arr[i]].valid = false;
+                blocks[arr[i]].code = findRemainingMines(neighbours);
         }
     }
 }
