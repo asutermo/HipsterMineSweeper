@@ -27,6 +27,8 @@ var boardHeight;
 var gamePlayable;
 var minesOnBoard;
 var flags;
+var flagHeight;
+var flagWidth;
 
 //game elements
 var difficulty = 1;
@@ -42,6 +44,11 @@ var one;
 var two;
 var three;
 var four;
+var five;
+var six;
+var seven;
+var eight;
+var nine;
 
 //start the game when page loads
 window.onload = init;
@@ -74,6 +81,16 @@ function initImages() {
     three.src = "./images/3.png";
     four = new Image();
     four.src = "./images/4.png";
+    five = new Image();
+    five.src = "./images/5.png";
+    six = new Image();
+    six.src = "./images/6.png";
+    seven = new Image();
+    seven.src = "./images/7.png";
+    eight = new Image();
+    eight.src = "./images/8.png";
+    nine = new Image();
+    nine.src = "./images/9.png";
 }
 
 function initBoard() {
@@ -121,9 +138,11 @@ function buildBoard() {
     
     blockWidth = Math.floor(canvas.width / cols);
     blockHeight = Math.floor(canvas.height / rows);
+    flagWidth = blockWidth/4;
+    flagHeight = blockHeight/4;
     boardWidth = blockWidth * cols;
     boardHeight = blockHeight * rows;
-    document.getElementById("mines").innerHTML = minesOnBoard;
+    updateMinesLabel();
 
     for(var i = 0; i < rows * cols; i++) {
         var block = {};
@@ -140,7 +159,6 @@ function buildBoard() {
         blocks.push(block);
     }
     
-    //blocks = shuffleArray(blocks);
     blocks.shuffle();
 
     var xPos = 0;
@@ -156,8 +174,21 @@ function buildBoard() {
     }
 }
 
+function updateMinesLabel() {
+    var html;
+
+    if (minesOnBoard == 10) {
+        html = "<img src='./images/1.png'width='"+flagWidth+"' height='"+flagHeight+"'/><img src='./images/0.png'width='"+flagWidth+"' height='"+flagHeight+"'/>"; 
+    }
+    else {
+        html = "<img src='./images/"+minesOnBoard+".png' width='"+flagWidth+"' height='"+flagHeight+"'/>";     
+    }
+    
+    document.getElementById("mines").innerHTML = html;  
+}
+
 function draw() {
-    document.getElementById("flags").innerHTML = flags;
+    updateFlagsLabel();
     canvasContext.clearRect(0, 0, boardWidth, boardHeight);
     var xPos = 0;
     var yPos = 0;
@@ -167,10 +198,15 @@ function draw() {
        
         xPos += blockWidth;
         if(xPos >= boardWidth) {
-                xPos = 0;
-                yPos += blockHeight;
+            xPos = 0;
+            yPos += blockHeight;
         }
     }
+}
+
+function updateFlagsLabel() {
+    var html = "<img src='./images/"+flags+".png' width='"+flagWidth+"' height='"+flagHeight+"'/>"; 
+    document.getElementById("flags").innerHTML = html;   
 }
 
 
@@ -199,6 +235,7 @@ function cellIsInvalid(e, x, y) {
     }
     else {
         canvasContext.drawImage(invalid, x, y, blockWidth, blockHeight);
+        console.log(e.code);
 
         if (e.code != notAMine) {
             switch (e.code) {
@@ -281,22 +318,22 @@ function placeFlag() {
 function checkLocation() {
     var blockNum = clickedCell();
     if(blockNum != null) {
-            if(blocks[blockNum].isFlag) {
-                    return;
+        if(blocks[blockNum].isFlag) {
+                return;
+        }
+        else {
+            blocks[blockNum].valid = false;
+            if(!blocks[blockNum].isMine) {
+                    var neighbours = getNeighbours(blockNum);
+                    blocks[blockNum].code = findRemainingMines(neighbours);
+                    if(blocks[blockNum].code == notAMine) {
+                            expand(neighbours);
+                    }
             }
             else {
-                    blocks[blockNum].valid = false;
-                    if(!blocks[blockNum].isMine) {
-                            var neighbours = getNeighbours(blockNum);
-                            blocks[blockNum].code = findRemainingMines(neighbours);
-                            if(blocks[blockNum].code == notAMine) {
-                                    expand(neighbours);
-                            }
-                    }
-                    else {
-                            gamePlayable = false;
-                    }
+                    gamePlayable = false;
             }
+        }
     }
 }
 
@@ -323,10 +360,10 @@ function clickedCell() {
 function checkWin() {
     var win = true;
     for(var i = 0; i < blocks.length; i++) {
-            if(blocks[i].valid && !blocks[i].isMine) {
-                    win = false;
-                    break;
-            }
+        if(blocks[i].valid && !blocks[i].isMine) {
+                win = false;
+                break;
+        }
     }
     
     return win;
@@ -335,9 +372,9 @@ function checkWin() {
 function finishBoard() {
     flags = minesOnBoard;
     for(var i = 0; i < blocks.length; i++) {
-            if(blocks[i].isMine) {
-                    blocks[i].isFlag = true;
-            }
+        if(blocks[i].isMine) {
+                blocks[i].isFlag = true;
+        }
     }
 }
 
@@ -382,13 +419,13 @@ function getNeighbours(index) {
 }
 
 function findRemainingMines(arr) {
-        var numMines = 0;
-        for(var i = 0; i < arr.length; i++) {
-                if(blocks[arr[i]].isMine) {
-                        numMines++;
-                }
-        }
-        return numMines;
+    var numMines = 0;
+    for(var i = 0; i < arr.length; i++) {
+            if(blocks[arr[i]].isMine) {
+                    numMines++;
+            }
+    }
+    return numMines;
 }
 
 function expand(arr) {
