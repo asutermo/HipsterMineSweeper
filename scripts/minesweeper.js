@@ -37,6 +37,11 @@ var unknown;
 var mine;
 var flag;
 var invalid;
+var zero;
+var one;
+var two;
+var three;
+var four;
 
 //start the game when page loads
 window.onload = init;
@@ -58,6 +63,17 @@ function initImages() {
 	invalid.src = "./images/starbucks_cup.png";
 	flag = new Image();
 	flag.src = "./images/background.png";
+
+    zero = new Image();
+    zero.src = "./images/0.png";
+    one  = new Image();
+    one.src = "./images/1.png";
+    two = new Image();
+    two.src = "./images/2.png";
+    three = new Image();
+    three.src = "./images/3.png";
+    four = new Image();
+    four.src = "./images/4.png";
 }
 
 function initBoard() {
@@ -175,13 +191,31 @@ function checkCellValidity(e, x, y) {
         else {
             canvasContext.drawImage(invalid, x, y, blockWidth, blockHeight);
             console.log(e.code);
-            /*if(block.code != notAMine) {
-                    //canvasContext.fillStyle = COLORS.numbers[block.code];
-                    canvasContext.fillText(block.code, xPos + blockWidth/2 - fontSize/4, yPos + blockHeight/2 + fontSize/4);
-            }*/
+
+            if (e.code != notAMine) {
+                switch (e.code) {
+                    case 0:
+                        canvasContext.drawImage(zero, x, y, blockWidth, blockHeight);
+                        break;
+                    case 1:
+                        canvasContext.drawImage(one, x, y, blockWidth, blockHeight);
+                        break;
+                    case 2:
+                        canvasContext.drawImage(two, x, y, blockWidth, blockHeight);
+                        break;
+                    case 3:
+                        canvasContext.drawImage(three, x, y, blockWidth, blockHeight);
+                        break;
+                    case 4:
+                        canvasContext.drawImage(four, x, y, blockWidth, blockHeight);
+                        break;
+                }
+                
+            }
         }
 	}	
 }
+
 
 function getMousePos(e) {
     var rect = canvas.getBoundingClientRect();
