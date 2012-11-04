@@ -45,7 +45,7 @@ function init() {
     canvas = document.getElementById("game_canvas");
     canvasContext = canvas.getContext("2d");
     initImages();
-    initGrid();
+    initBoard();
     canvas.onmouseup = update;
 }
 
@@ -60,7 +60,7 @@ function initImages() {
 	flag.src = "./images/background.png";
 }
 
-function initGrid() {
+function initBoard() {
     blocks = [];
     mouse = {
     	x: 0, 
@@ -68,20 +68,20 @@ function initGrid() {
     };
     gamePlayable = true;
     flags = 0;
-    buildGridLayout();
-    buildGrid();
+    buildBoardLayout();
+    buildBoard();
     draw();
 }
 
 //allow user to pick a difficulty
 function setDifficulty(e) {
 	difficulty = e;
-	initGrid();
+	initBoard();
 }
 
 
 //using Windows Minesweeper Rules
-function buildGridLayout() {
+function buildBoardLayout() {
 	switch(difficulty) {
         case 1:
             rows = 10;
@@ -101,7 +101,7 @@ function buildGridLayout() {
     }	
 }
 
-function buildGrid() {
+function buildBoard() {
     
     blockWidth = Math.floor(canvas.width / cols);
     blockHeight = Math.floor(canvas.height / rows);
@@ -205,11 +205,11 @@ function update(e) {
     
     if(!gamePlayable) {
         alert("Hipster Scum! You lose!");
-        initGrid();
+        initBoard();
     }
     else if(didUserWin) {
         alert("WINNN!");
-        initGrid();
+        initBoard();
     }
 }
 
