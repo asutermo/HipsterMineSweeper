@@ -177,45 +177,51 @@ function draw() {
 
 function checkCellValidity(e, x, y) {
 	if(e.valid) {
-        if(e.isFlag) {
-            canvasContext.drawImage(flag, x, y, blockWidth, blockHeight);
-        }
-        else {
-			canvasContext.drawImage(unknown, x, y, blockWidth, blockHeight);
-        }
+        cellIsValid(e, x, y);    
 	}
     else {
-        if(e.isMine) {
-            canvasContext.drawImage(mine, x, y, blockWidth, blockHeight);
-        }
-        else {
-            canvasContext.drawImage(invalid, x, y, blockWidth, blockHeight);
-            console.log(e.code);
-
-            if (e.code != notAMine) {
-                switch (e.code) {
-                    case 0:
-                        canvasContext.drawImage(zero, x, y, blockWidth, blockHeight);
-                        break;
-                    case 1:
-                        canvasContext.drawImage(one, x, y, blockWidth, blockHeight);
-                        break;
-                    case 2:
-                        canvasContext.drawImage(two, x, y, blockWidth, blockHeight);
-                        break;
-                    case 3:
-                        canvasContext.drawImage(three, x, y, blockWidth, blockHeight);
-                        break;
-                    case 4:
-                        canvasContext.drawImage(four, x, y, blockWidth, blockHeight);
-                        break;
-                }
-                
-            }
-        }
+        cellIsInvalid(e, x, y);    
 	}	
 }
 
+function cellIsValid(e, x, y) {
+    if(e.isFlag) {
+        canvasContext.drawImage(flag, x, y, blockWidth, blockHeight);
+    }
+    else {
+        canvasContext.drawImage(unknown, x, y, blockWidth, blockHeight);
+    }  
+}
+
+function cellIsInvalid(e, x, y) {
+    if(e.isMine) {
+        canvasContext.drawImage(mine, x, y, blockWidth, blockHeight);
+    }
+    else {
+        canvasContext.drawImage(invalid, x, y, blockWidth, blockHeight);
+
+        if (e.code != notAMine) {
+            switch (e.code) {
+                case 0:
+                    canvasContext.drawImage(zero, x, y, blockWidth, blockHeight);
+                    break;
+                case 1:
+                    canvasContext.drawImage(one, x, y, blockWidth, blockHeight);
+                    break;
+                case 2:
+                    canvasContext.drawImage(two, x, y, blockWidth, blockHeight);
+                    break;
+                case 3:
+                    canvasContext.drawImage(three, x, y, blockWidth, blockHeight);
+                    break;
+                case 4:
+                    canvasContext.drawImage(four, x, y, blockWidth, blockHeight);
+                    break;
+            }
+            
+        }
+    }
+}
 
 function getMousePos(e) {
     var rect = canvas.getBoundingClientRect();
