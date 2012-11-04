@@ -1,27 +1,44 @@
-var rows;
-var cols;
-var minesOnBoard;
+//Fisher-Yates shuffle algorithm
+Array.prototype.shuffle = function()
+{
+	var i = this.length, j, temp;
+	while ( --i )
+	{
+		j = Math.floor( Math.random() * (i - 1) );
+		temp = this[i];
+		this[i] = this[j];
+		this[j] = temp;
+	}
+}
 
-var difficulty = 1;
-var notAMine = 0;
-
+//UI elements
 var canvas;
 var canvasContext;
 var mouse;
 
+//grid elements
+var rows;
+var cols;
 var cells;
 var cellWidth;
 var cellHeight;
 var gridWidth;
 var gridHeight;
 var gridValid;
-
+var minesOnBoard;
 var flags;
 
+//game elements
+var difficulty = 1;
+var notAMine = 0;
+
+//image elements
 var unknown;
 var mine;
 var flag;
 var invalid;
+
+//start the game when page loads
 window.onload = init;
 
 function init() {
@@ -56,11 +73,14 @@ function initGrid() {
     draw();
 }
 
+//allow user to pick a difficulty
 function setDifficulty(e) {
 	difficulty = e;
 	initGrid();
 }
 
+
+//using Windows Minesweeper Rules
 function buildGridLayout() {
 	switch(difficulty) {
         case 1:
@@ -221,106 +241,106 @@ function setFlag() {
 }
 
 function checkLocation() {
-        var cellNum = clickedCell();
-        if(cellNum != null) {
-                if(cells[cellNum].isFlag) {
-                        return;
-                }
-                else {
-                        cells[cellNum].valid = false;
-                        if(!cells[cellNum].isMine) {
-                                var neighbours = getNeighbours(cellNum);
-                                cells[cellNum].code = findRemainingMines(neighbours);
-                                if(cells[cellNum].code == notAMine) {
-                                        expand(neighbours);
-                                }
-                        }
-                        else {
-                                gridValid = false;
-                        }
-                }
-        }
+    var cellNum = clickedCell();
+    if(cellNum != null) {
+            if(cells[cellNum].isFlag) {
+                    return;
+            }
+            else {
+                    cells[cellNum].valid = false;
+                    if(!cells[cellNum].isMine) {
+                            var neighbours = getNeighbours(cellNum);
+                            cells[cellNum].code = findRemainingMines(neighbours);
+                            if(cells[cellNum].code == notAMine) {
+                                    expand(neighbours);
+                            }
+                    }
+                    else {
+                            gridValid = false;
+                    }
+            }
+    }
 }
 
 function clickedCell() {
-        var xPos = 0;
-        var yPos = 0;
+    var xPos = 0;
+    var yPos = 0;
 
-        for(var i = 0; i < cells.length; i++) {
-                if(mouse.x < xPos || mouse.x > (xPos + cellWidth) || mouse.y < yPos || mouse.y > (yPos + cellHeight)) {
-                }
-                else {
-                        return i;
-                }
-                xPos += cellWidth;
-                if(xPos >= gridWidth) {
-                        xPos = 0;
-                        yPos += cellHeight;
-                }
-        }
+    for(var i = 0; i < cells.length; i++) {
+            if(mouse.x < xPos || mouse.x > (xPos + cellWidth) || mouse.y < yPos || mouse.y > (yPos + cellHeight)) {
+            }
+            else {
+                    return i;
+            }
+            xPos += cellWidth;
+            if(xPos >= gridWidth) {
+                    xPos = 0;
+                    yPos += cellHeight;
+            }
+    }
 
-        return null;
+    return null;
 }
 
 function checkWin() {
-        var win = true;
-        for(var i = 0; i < cells.length; i++) {
-                if(cells[i].valid && !cells[i].isMine) {
-                        win = false;
-                        break;
-                }
-        }
-        
-        return win;
+    var win = true;
+    for(var i = 0; i < cells.length; i++) {
+            if(cells[i].valid && !cells[i].isMine) {
+                    win = false;
+                    break;
+            }
+    }
+    
+    return win;
 }
 
 function finishBoard() {
-        flags = minesOnBoard;
-        for(var i = 0; i < cells.length; i++) {
-                if(cells[i].isMine) {
-                        cells[i].isFlag = true;
-                }
-        }
+    flags = minesOnBoard;
+    for(var i = 0; i < cells.length; i++) {
+            if(cells[i].isMine) {
+                    cells[i].isFlag = true;
+            }
+    }
 }
 
 function getNeighbours(index) {
-        var neighbours = [];
-        var newIndex = index - cols - 1;
-        if(index % cols != 0 && newIndex >= 0) {
-                neighbours.push(newIndex);
-        }
-        newIndex = index - cols;
-        if(newIndex >= 0) {
-                neighbours.push(newIndex);
-        }
-        newIndex = index - cols + 1;
-        if(index % cols != cols - 1 && newIndex >= 0) {
-                neighbours.push(newIndex);
-        }
-        
-        newIndex = index - 1;
-        if(index % cols != 0 && newIndex >= 0) {
-                neighbours.push(newIndex);
-        }
-        newIndex = index + 1;
-        if(index % cols != cols - 1 && newIndex < cells.length) {
-                neighbours.push(newIndex);
-        }
-        
-        newIndex = index + cols - 1;
-        if(index % cols != 0 && newIndex < cells.length) {
-                neighbours.push(newIndex);
-        }
-        newIndex = index + cols;
-        if(newIndex < cells.length) {
-                neighbours.push(newIndex);
-        }
-        newIndex = index + cols + 1;
-        if(index % cols != cols - 1 && newIndex < cells.length) {
-                neighbours.push(newIndex);
-        }
+    var neighbours = [];
+    var newIndex = index - cols - 1;
+    if(index % cols != 0 && newIndex >= 0) {
+            neighbours.push(newIndex);
+    }
+    newIndex = index - cols;
+    if(newIndex >= 0) {
+            neighbours.push(newIndex);
+    }
+    newIndex = index - cols + 1;
+    if(index % cols != cols - 1 && newIndex >= 0) {
+            neighbours.push(newIndex);
+    }
+    
+    newIndex = index - 1;
+    if(index % cols != 0 && newIndex >= 0) {
+            neighbours.push(newIndex);
+    }
+    newIndex = index + 1;
+    if(index % cols != cols - 1 && newIndex < cells.length) {
+            neighbours.push(newIndex);
+    }
+    
+    newIndex = index + cols - 1;
+    if(index % cols != 0 && newIndex < cells.length) {
+            neighbours.push(newIndex);
+    }
+    newIndex = index + cols;
+    if(newIndex < cells.length) {
+            neighbours.push(newIndex);
+    }
+    newIndex = index + cols + 1;
+    if(index % cols != cols - 1 && newIndex < cells.length) {
+            neighbours.push(newIndex);
+    }
 
-        return neighbours;
+    return neighbours;
 }
 
 function findRemainingMines(arr) {
@@ -347,14 +367,3 @@ function expand(arr) {
     }
 }
 
-Array.prototype.shuffle = function()
-{
-	var i = this.length, j, temp;
-	while ( --i )
-	{
-		j = Math.floor( Math.random() * (i - 1) );
-		temp = this[i];
-		this[i] = this[j];
-		this[j] = temp;
-	}
-}
