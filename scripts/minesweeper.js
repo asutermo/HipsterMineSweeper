@@ -59,6 +59,44 @@ function init() {
     canvas.onmouseup = update;
 }
 
+/*var element = document.createElement("input");
+
+ //Assign different attributes to the element.
+ element.setAttribute("type", type);
+ element.setAttribute("value", type);
+ element.setAttribute("name", type);
+
+
+ var foo = document.getElementById("fooBar");
+
+ //Append the element in page (in span).
+ foo.appendChild(element)*/
+function addDifficultyButtons() {
+    var button = document.createElement('input');
+    button.setAttribute('type','button');
+    button.setAttribute('name','easy');
+    button.setAttribute('value','Easy');
+    var form = document.getElementById("game");
+    form.appendChild(buttonnode);
+    button.attachEvent('OnClick',setDifficulty(1));
+
+    var button = document.createElement('input');
+    button.setAttribute('type','button');
+    button.setAttribute('name','medium');
+    button.setAttribute('value','Medium');
+    var form = document.getElementById("game");
+    form.appendChild(buttonnode);
+    button.attachEvent('OnClick',setDifficulty(2));
+
+    var button = document.createElement('input');
+    button.setAttribute('type','button');
+    button.setAttribute('name','hard');
+    button.setAttribute('value','Hard');
+    var form = document.getElementById("game");
+    form.appendChild(buttonnode);
+    button.attachEvent('OnClick',setDifficulty(3));
+}
+
 function initImages() {
     unknown = new Image();
     unknown.src = "./images/pbr.png";
@@ -240,7 +278,6 @@ function cellIsInvalid(e, x, y) {
     }
     else {
         canvasContext.drawImage(invalid, x, y, blockWidth, blockHeight);
-        console.log(e.blockType);
 
         if (e.blockType != notAMine) {
             var imageToDraw = new Image();
@@ -404,6 +441,7 @@ function getAdjacents(index) {
     var adjacents = [];
     var newIndex = index - cols - 1;
     var indexMod = index % cols;
+
     if(indexMod != 0 && newIndex >= 0) {
         adjacents.push(newIndex);
     }

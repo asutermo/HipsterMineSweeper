@@ -11,15 +11,17 @@
 
 <body>
 	<div>
-	 	<form>
+	 	<form id="game">
+            <br />
 		    <input type="button" value="Easy" onclick="setDifficulty(1)">
 		    <input type="button" value="Medium" onclick="setDifficulty(2)">
 		    <input type="button" value="Hard" onclick="setDifficulty(3)">
-		    <br>
+		    <br />
+            <br />
 		    <label>Flags: </label>
-		    <label id="flags">0</label>
+		    <label id="flags"></label>
 		    /
-		    <label id="mines">10</label>
+		    <label id="mines"></label>
 		    <br>
 				<canvas id="game_canvas" height="1280" width="960" oncontextmenu="return false;">
 				Y u no use proper browser?
