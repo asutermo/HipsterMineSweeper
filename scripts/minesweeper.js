@@ -70,7 +70,6 @@ function initImages() {
 	invalid.src = "./images/starbucks_cup.png";
 	flag = new Image();
 	flag.src = "./images/background.png";
-
     zero = new Image();
     zero.src = "./images/0.png";
     one  = new Image();
@@ -176,9 +175,10 @@ function buildBoard() {
 
 function updateMinesLabel() {
     var html;
-
-    if (minesOnBoard == 10) {
-        html = "<img src='./images/1.png'width='"+flagWidth+"' height='"+flagHeight+"'/><img src='./images/0.png'width='"+flagWidth+"' height='"+flagHeight+"'/>"; 
+    if (minesOnBoard >= 10) {
+        var firstDigit = Math.floor(minesOnBoard / 10)  ;
+        var secondDigit = minesOnBoard % 10;
+        html = "<img src='./images/"+firstDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/><img src='./images/"+secondDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/>"; 
     }
     else {
         html = "<img src='./images/"+minesOnBoard+".png' width='"+flagWidth+"' height='"+flagHeight+"'/>";     
@@ -325,10 +325,10 @@ function checkLocation() {
         else {
             blocks[blockNum].isClickable = false;
             if(!blocks[blockNum].isMine) {
-                    var neighbours = getNeighbours(blockNum);
-                    blocks[blockNum].blockType = findRemainingMines(neighbours);
+                    var adjacents = getadjacents(blockNum);
+                    blocks[blockNum].blockType = findRemainingMines(adjacents);
                     if(blocks[blockNum].blockType == notAMine) {
-                            expand(neighbours);
+                            expand(adjacents);
                     }
             }
             else {
@@ -379,51 +379,51 @@ function finishBoard() {
     }
 }
 
-function getNeighbours(index) {
-    var neighbours = [];
+function getadjacents(index) {
+    var adjacents = [];
     var newIndex = index - cols - 1;
     if(index % cols != 0 && newIndex >= 0) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
     newIndex = index - cols;
     if(newIndex >= 0) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
     newIndex = index - cols + 1;
     if(index % cols != cols - 1 && newIndex >= 0) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
     
     newIndex = index - 1;
     if(index % cols != 0 && newIndex >= 0) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
     newIndex = index + 1;
     if(index % cols != cols - 1 && newIndex < blocks.length) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
     
     newIndex = index + cols - 1;
     if(index % cols != 0 && newIndex < blocks.length) {
-            neighbours.push(newIndex);
+            adjacents.push(newIndex);
     }
     newIndex = index + cols;
     if(newIndex < blocks.length) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
     newIndex = index + cols + 1;
     if(index % cols != cols - 1 && newIndex < blocks.length) {
-            neighbours.push(newIndex);
+        adjacents.push(newIndex);
     }
 
-    return neighbours;
+    return adjacents;
 }
 
 function findRemainingMines(arr) {
     var numMines = 0;
     for(var i = 0; i < arr.length; i++) {
         if(blocks[arr[i]].isMine) {
-                numMines++;
+            numMines++;
         }
     }
     return numMines;
@@ -431,14 +431,14 @@ function findRemainingMines(arr) {
 
 function expand(arr) {
     for(var i = 0; i < arr.length; i++) {
-        var neighbours = getNeighbours(arr[i]);
-        if(blocks[arr[i]].isClickable && findRemainingMines(neighbours) == notAMine) {
+        var adjacents = getadjacents(arr[i]);
+        if(blocks[arr[i]].isClickable && findRemainingMines(adjacents) == notAMine) {
             blocks[arr[i]].isClickable = false;
-            expand(neighbours);
+            expand(adjacents);
         }
         else {
             blocks[arr[i]].isClickable = false;
-            blocks[arr[i]].blockType = findRemainingMines(neighbours);
+            blocks[arr[i]].blockType = findRemainingMines(adjacents);
         }
     }
 }
