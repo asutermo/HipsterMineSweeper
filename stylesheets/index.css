@@ -1,44 +1,35 @@
+body {
+	margin:0;
+	padding:0;
+	color:#000;
+	background:#a7a09a;
+	overflow:hidden;
+	height: 100%;
+}
+
 h1 {
 	text-shadow: 5px 5px 5px #FF0000;
 }
 
-#difficulty, #legend, #flagDiv, #canvasDiv
-{
-	margin-left:auto;
-	margin-right:auto;
+div.left, div.right {
 	border:1px solid;
 	border-radius:15px;
 	-webkit-border-radius:25px; 
-	background-color:#C0C0C0;
-	width:650px;
-	text-align: center;
-}	
-
-#difficulty, #flagDiv {
-	padding-left:50px;
-	padding-top:15px;
-	text-align: center;
+	background-color:#C0C0C0;	
+	with:800px;
+}
+div.left {
+	width:30%;
+	margin-right:70%;
 }
 
-
-#legend {
-	height:150px;
-	padding-left:50px;
-	padding-top:25px;
-	position:relative;
+div.right {
+	width:70%;
+	margin-left:30%;
+	text-align:right;
 }
 
-#legend > span {
-	margin-left:25px;
-}
 
 #canvasDiv {
-	margin-left:auto;
-	margin-right:auto;
-	position:relative;
-	width:650px;
-	height:650px;
-	padding-left:30px;
-	padding-top:50px;
-	padding-right:20px;
+	text-align: right;
 }
