@@ -54,47 +54,16 @@ window.onload = init;
 function init() {
     canvas = document.getElementById("game_canvas");
     canvasContext = canvas.getContext("2d");
+    addDifficultyButtons();
     initImages();
     initBoard();
     canvas.onmouseup = update;
 }
 
-/*var element = document.createElement("input");
-
- //Assign different attributes to the element.
- element.setAttribute("type", type);
- element.setAttribute("value", type);
- element.setAttribute("name", type);
-
-
- var foo = document.getElementById("fooBar");
-
- //Append the element in page (in span).
- foo.appendChild(element)*/
 function addDifficultyButtons() {
-    var button = document.createElement('input');
-    button.setAttribute('type','button');
-    button.setAttribute('name','easy');
-    button.setAttribute('value','Easy');
-    var form = document.getElementById("game");
-    form.appendChild(buttonnode);
-    button.attachEvent('OnClick',setDifficulty(1));
-
-    var button = document.createElement('input');
-    button.setAttribute('type','button');
-    button.setAttribute('name','medium');
-    button.setAttribute('value','Medium');
-    var form = document.getElementById("game");
-    form.appendChild(buttonnode);
-    button.attachEvent('OnClick',setDifficulty(2));
-
-    var button = document.createElement('input');
-    button.setAttribute('type','button');
-    button.setAttribute('name','hard');
-    button.setAttribute('value','Hard');
-    var form = document.getElementById("game");
-    form.appendChild(buttonnode);
-    button.attachEvent('OnClick',setDifficulty(3));
+    document.getElementById('difficulty').innerHTML += "<input type='button' value='Easy' onclick='setDifficulty(1)'/>";
+    document.getElementById('difficulty').innerHTML += "<input type='button' value='Medium' onclick='setDifficulty(2)'/>";
+    document.getElementById('difficulty').innerHTML += "<input type='button' value='Hard' onclick='setDifficulty(3)'/>";
 }
 
 function initImages() {

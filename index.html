@@ -1,35 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="stylesheets/index.css"
-	    title="index" /> 
-	<script type="text/javascript" src="scripts/kinetic.js"></script>
-	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheets/index.css"
+          title="index" />
+    <script type="text/javascript" src="scripts/kinetic.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-	<title>Mines Sweeper!</title>
+    <title>Mines Sweeper!</title>
 </head>
 
 <body>
-	<div>
-	 	<form id="game">
-            <br />
-		    <input type="button" value="Easy" onclick="setDifficulty(1)">
-		    <input type="button" value="Medium" onclick="setDifficulty(2)">
-		    <input type="button" value="Hard" onclick="setDifficulty(3)">
-		    <br />
-            <br />
-		    <label>Flags: </label>
-		    <label id="flags"></label>
-		    /
-		    <label id="mines"></label>
-		    <br>
-				<canvas id="game_canvas" height="1280" width="960" oncontextmenu="return false;">
-				Y u no use proper browser?
-			</canvas>
-		</form>
-	</div>
-	<script src="scripts/minesweeper.js"></script>
-    
-</body>
+<div>
+    <form>
+        <br />
+        <div id="difficulty">
+        </div>
 
+        <br />
+        <br />
+        <span id="text" value="Flags Used: " ></span> <span id="flags"></span> / <span id="mines"></span>
+        <br />
+        <br />
+
+        <canvas id="game_canvas" height="1280" width="960">
+            Y u no use proper browser?
+        </canvas>
+    </form>
+</div>
+<script src="scripts/minesweeper.js"></script>
+</body>
 </html>
