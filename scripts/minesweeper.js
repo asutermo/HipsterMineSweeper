@@ -383,13 +383,11 @@ function clickedCell() {
     var yPos = 0;
 
     for(var i = 0; i < blocks.length; i++) {
-        if(mouse.x < xPos || mouse.x > (xPos + blockWidth) || mouse.y < yPos || mouse.y > (yPos + blockHeight)) {
-        }
-        else {
+        if (!(mouse.x < xPos || mouse.x > (xPos + blockWidth) || mouse.y < yPos || mouse.y > (yPos + blockHeight))) {
             return i;
         }
         xPos += blockWidth;
-        if(xPos >= boardWidth) {
+        if (xPos >= boardWidth) {
             xPos = 0;
             yPos += blockHeight;
         }
@@ -398,44 +396,41 @@ function clickedCell() {
     return null;
 }
 
-function getAdjacents(index) {
+function getAdjacents(position) {
     var adjacents = [];
-    var indexMod = index % cols;
-    var leftCheck = cols - 1;
-    var rightCheck = cols + 1;
-    var newIndex = index - cols - 1;
-    if(indexMod != 0 && newIndex >= 0) {
-        adjacents.push(newIndex);
+    var newPosition = position - cols - 1;
+    if(position % cols != 0 && newPosition >= 0) {
+        adjacents.push(newPosition);
     }
-    newIndex = index - cols;
-    if(newIndex >= 0) {
-        adjacents.push(newIndex);
+    newPosition = position - cols;
+    if(newPosition >= 0) {
+        adjacents.push(newPosition);
     }
-    newIndex = index - rightCheck;
-    if(indexMod != leftCheck && newIndex >= 0) {
-        adjacents.push(newIndex);
+    newPosition = position - cols + 1;
+    if(position % cols != cols - 1 && newPosition >= 0) {
+        adjacents.push(newPosition);
     }
 
-    newIndex = index - 1;
-    if(indexMod != 0 && newIndex >= 0) {
-        adjacents.push(newIndex);
+    newPosition = position - 1;
+    if(position % cols != 0 && newPosition >= 0) {
+        adjacents.push(newPosition);
     }
-    newIndex = index + 1;
-    if(indexMod != leftCheck && newIndex < blocks.length) {
-        adjacents.push(newIndex);
+    newPosition = position + 1;
+    if(position % cols != cols - 1 && newPosition < blocks.length) {
+        adjacents.push(newPosition);
     }
 
-    newIndex = index + leftCheck;
-    if(indexMod != 0 && newIndex < blocks.length) {
-        adjacents.push(newIndex);
+    newPosition = position + cols - 1;
+    if(position % cols != 0 && newPosition < blocks.length) {
+        adjacents.push(newPosition);
     }
-    newIndex = index + cols;
-    if(newIndex < blocks.length) {
-        adjacents.push(newIndex);
+    newPosition = position + cols;
+    if(newPosition < blocks.length) {
+        adjacents.push(newPosition);
     }
-    newIndex = index + rightCheck;
-    if(indexMod != leftCheck && newIndex < blocks.length) {
-        adjacents.push(newIndex);
+    newPosition = position + cols + 1;
+    if(position % cols != cols - 1 && newPosition < blocks.length) {
+        adjacents.push(newPosition);
     }
 
     return adjacents;
