@@ -57,7 +57,6 @@ function init() {
     canvasContext = canvas.getContext("2d");
     addDifficultyButtons();
     addFlagCounter();
-    //initImages();
     initLegend();
     initBoard();
     canvas.onmouseup = update;
@@ -163,14 +162,14 @@ function setBlocksOnBoard() {
         var block = {};
         if (i >= minesOnBoard) {
             block.blockType = notAMine;
-            block.isMine = false;
+            block.Mine = false;
         }
         else {
             block.blockType = notAMine;
-            block.isMine = true;
+            block.Mine = true;
         }
-        block.isFlag = false;
-        block.isClickable = true;
+        block.Flag = false;
+        block.Clickable = true;
         blocks.push(block);
     }
 }
@@ -254,7 +253,7 @@ function updateFlagsLabel() {
 }
 
 function checkCellValidity(e, x, y) {
-    if(e.isClickable) {
+    if(e.Clickable) {
         cellIsValid(e, x, y);
     }
     else {
@@ -263,7 +262,7 @@ function checkCellValidity(e, x, y) {
 }
 
 function cellIsValid(e, x, y) {
-    if(e.isFlag) {
+    if(e.Flag) {
         canvasContext.drawImage(flag, x, y, blockWidth, blockHeight);
     }
     else {
@@ -272,7 +271,7 @@ function cellIsValid(e, x, y) {
 }
 
 function cellIsInvalid(e, x, y) {
-    if(e.isMine) {
+    if(e.Mine) {
         canvasContext.drawImage(mine, x, y, blockWidth, blockHeight);
     }
     else {
@@ -347,9 +346,9 @@ function checkMouseClick(e) {
 function placeFlag() {
     var blockNum = clickedCell();
     if(blockNum != null) {
-        if(blocks[blockNum].isClickable) {
-            blocks[blockNum].isFlag = !blocks[blockNum].isFlag;
-            if(blocks[blockNum].isFlag) {
+        if(blocks[blockNum].Clickable) {
+            blocks[blockNum].Flag = !blocks[blockNum].Flag;
+            if(blocks[blockNum].Flag) {
                 flags++;
             }
             else {
@@ -362,9 +361,9 @@ function placeFlag() {
 function checkLocation() {
     var blockNum = clickedCell();
     if(blockNum != null) {
-        if (!blocks[blockNum].isFlag) {
-            blocks[blockNum].isClickable = false;
-            if (!blocks[blockNum].isMine) {
+        if (!blocks[blockNum].Flag) {
+            blocks[blockNum].Clickable = false;
+            if (!blocks[blockNum].Mine) {
                 var adjacents = getAdjacents(blockNum);
                 blocks[blockNum].blockType = findRemainingMines(adjacents);
                 if (blocks[blockNum].blockType == notAMine) {
@@ -379,17 +378,17 @@ function checkLocation() {
 }
 
 function clickedCell() {
-    var xPos = 0;
-    var yPos = 0;
+    var xPosition = 0;
+    var yPosition = 0;
 
     for(var i = 0; i < blocks.length; i++) {
-        if (!(mouse.x < xPos || mouse.x > (xPos + blockWidth) || mouse.y < yPos || mouse.y > (yPos + blockHeight))) {
+        if (!(mouse.x < xPosition || mouse.x > (xPosition + blockWidth) || mouse.y < yPosition || mouse.y > (yPosition + blockHeight))) {
             return i;
         }
-        xPos += blockWidth;
-        if (xPos >= boardWidth) {
-            xPos = 0;
-            yPos += blockHeight;
+        xPosition += blockWidth;
+        if (xPosition >= boardWidth) {
+            xPosition = 0;
+            yPosition += blockHeight;
         }
     }
 
@@ -439,7 +438,7 @@ function getAdjacents(position) {
 function findRemainingMines(e) {
     var numMines = 0;
     for(var i = 0; i < e.length; i++) {
-        if(blocks[e[i]].isMine) {
+        if(blocks[e[i]].Mine) {
             numMines++;
         }
     }
@@ -449,12 +448,12 @@ function findRemainingMines(e) {
 function invalidCellExpansion(e) {
     for(var i = 0; i < e.length; i++) {
         var adjacents = getAdjacents(e[i]);
-        if(blocks[e[i]].isClickable && findRemainingMines(adjacents) == notAMine) {
-            blocks[e[i]].isClickable = false;
+        if(blocks[e[i]].Clickable && findRemainingMines(adjacents) == notAMine) {
+            blocks[e[i]].Clickable = false;
             invalidCellExpansion(adjacents);
         }
         else {
-            blocks[e[i]].isClickable = false;
+            blocks[e[i]].Clickable = false;
             blocks[e[i]].blockType = findRemainingMines(adjacents);
         }
     }
@@ -464,7 +463,7 @@ function printSolution() {
     document.getElementById('solution').innerHTML = "";
     var print = "";
     for (var i = 0; i < blocks.length; i++) {
-        print += blocks[i].isMine + " ";
+        print += blocks[i].Mine + " ";
         if ( (i +1) % cols == 0)   {
             print+= "<br />";
         }
@@ -493,7 +492,7 @@ function checkIfUserWon() {
 function checkWin() {
     var win = true;
     for(var i = 0; i < blocks.length; i++) {
-        if(blocks[i].isClickable && !blocks[i].isMine) {
+        if(blocks[i].Clickable && !blocks[i].Mine) {
             win = false;
             break;
         }
@@ -505,8 +504,8 @@ function checkWin() {
 function terminateBoard() {
     flags = minesOnBoard;
     for(var i = 0; i < blocks.length; i++) {
-        if(blocks[i].isMine) {
-            blocks[i].isFlag = true;
+        if(blocks[i].Mine) {
+            blocks[i].Flag = true;
         }
     }
 }
