@@ -70,7 +70,7 @@ function addDifficultyButtons() {
 }
 
 function addFlagCounter() {
-    document.getElementById('flagDiv').innerHTML += "<span id='flagText' value='Flags Used: ' ></span>";
+    document.getElementById('flagDiv').innerHTML += "<span id='flagText'>Flags Used: </span>";
     document.getElementById('flagDiv').innerHTML += "<span id='flags'></span> /";
     document.getElementById('flagDiv').innerHTML += "<span id='mines'></span>";
     document.getElementById('flagDiv').innerHTML += "<br />";

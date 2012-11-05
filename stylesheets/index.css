@@ -11,11 +11,20 @@ h1 {
 	-webkit-border-radius:25px; 
 	background-color:#C0C0C0;
 	width:650px;
+}	
+
+#difficulty, #flagDiv {
+	padding-left:50px;
+	padding-top:15px;
+	text-align: center;
+}
+
+#legend {
 	height:150px;
 	padding-left:50px;
 	padding-top:25px;
-}	
-
+	position:relative;
+}
 
 #legend > span {
 	margin-left:25px;
