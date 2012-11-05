@@ -1,15 +1,13 @@
 //Fisher-Yates shuffle algorithm
-Array.prototype.shuffle = function()
-{
-	var i = this.length, j, temp;
-	while ( --i )
-	{
-		j = Math.floor( Math.random() * (i - 1) );
-		temp = this[i];
-		this[i] = this[j];
-		this[j] = temp;
-	}
-}
+Array.prototype.shuffle = function () {
+    var i = this.length, j, temp;
+    while (--i) {
+        j = Math.floor(Math.random() * (i - 1));
+        temp = this[i];
+        this[i] = this[j];
+        this[j] = temp;
+    }
+};
 
 //UI elements
 var canvas;
@@ -62,14 +60,14 @@ function init() {
 }
 
 function initImages() {
-	unknown = new Image();
-	unknown.src = "./images/pbr.png";
-	mine = new Image();
-	mine.src = "./images/radio_tower.png";
-	invalid = new Image();
-	invalid.src = "./images/starbucks_cup.png";
-	flag = new Image();
-	flag.src = "./images/background.png";
+    unknown = new Image();
+    unknown.src = "./images/pbr.png";
+    mine = new Image();
+    mine.src = "./images/radio_tower.png";
+    invalid = new Image();
+    invalid.src = "./images/starbucks_cup.png";
+    flag = new Image();
+    flag.src = "./images/background.png";
     zero = new Image();
     zero.src = "./images/0.png";
     one  = new Image();
@@ -95,8 +93,8 @@ function initImages() {
 function initBoard() {
     blocks = [];
     mouse = {
-    	x: 0, 
-    	y: 0
+        x: 0,
+        y: 0
     };
     gamePlayable = true;
     flags = 0;
@@ -107,22 +105,20 @@ function initBoard() {
 
 //allow user to pick a difficulty
 function setDifficulty(e) {
-	difficulty = e;
-	initBoard();
+    difficulty = e;
+    initBoard();
 }
 
 
 //using Windows Minesweeper Rules
 function buildBoardLayout() {
-	switch(difficulty) {
+    switch(difficulty) {
         case 1:
-            rows = 10;
-            cols = 10;
+            rows = cols = 10;
             minesOnBoard = 10;
             break;
         case 2:
-            rows = 16;
-            cols = 16;
+            rows = cols = 16;
             minesOnBoard = 40;
             break;
         case 3:
@@ -130,7 +126,7 @@ function buildBoardLayout() {
             cols = 30;
             minesOnBoard = 99;
             break;
-    }	
+    }
 }
 
 function setBlocksOnBoard() {
@@ -183,28 +179,28 @@ function updateMinesLabel() {
     if (minesOnBoard >= 10) {
         var firstDigit = Math.floor(minesOnBoard / 10)  ;
         var secondDigit = minesOnBoard % 10;
-        html = "<img src='./images/"+firstDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/><img src='./images/"+secondDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/>"; 
+        html = "<img src='./images/"+firstDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/><img src='./images/"+secondDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/>";
     }
     else {
-        html = "<img src='./images/"+minesOnBoard+".png' width='"+flagWidth+"' height='"+flagHeight+"'/>";     
+        html = "<img src='./images/"+minesOnBoard+".png' width='"+flagWidth+"' height='"+flagHeight+"'/>";
     }
-    
-    document.getElementById("mines").innerHTML = html;  
+
+    document.getElementById("mines").innerHTML = html;
 }
 
 function draw() {
     updateFlagsLabel();
     canvasContext.clearRect(0, 0, boardWidth, boardHeight);
-    var xPos = 0;
-    var yPos = 0;
+    var xPosition = 0;
+    var yPosition = 0;
     for(var i = 0; i < blocks.length; i++) {
         var block = blocks[i];
-        checkCellValidity(block, xPos, yPos);
-       
-        xPos += blockWidth;
-        if(xPos >= boardWidth) {
-            xPos = 0;
-            yPos += blockHeight;
+        checkCellValidity(block, xPosition, yPosition);
+
+        xPosition += blockWidth;
+        if(xPosition >= boardWidth) {
+            xPosition = 0;
+            yPosition += blockHeight;
         }
     }
 }
@@ -214,12 +210,12 @@ function updateFlagsLabel() {
 }
 
 function checkCellValidity(e, x, y) {
-	if(e.isClickable) {
-        cellIsValid(e, x, y);    
-	}
+    if(e.isClickable) {
+        cellIsValid(e, x, y);
+    }
     else {
-        cellIsInvalid(e, x, y);    
-	}	
+        cellIsInvalid(e, x, y);
+    }
 }
 
 function cellIsValid(e, x, y) {
@@ -228,7 +224,7 @@ function cellIsValid(e, x, y) {
     }
     else {
         canvasContext.drawImage(unknown, x, y, blockWidth, blockHeight);
-    }  
+    }
 }
 
 function cellIsInvalid(e, x, y) {
@@ -240,24 +236,41 @@ function cellIsInvalid(e, x, y) {
         console.log(e.blockType);
 
         if (e.blockType != notAMine) {
+            var imageToDraw = new Image();
             switch (e.blockType) {
                 case 0:
-                    canvasContext.drawImage(zero, x, y, blockWidth, blockHeight);
+                    imageToDraw = zero;
                     break;
                 case 1:
-                    canvasContext.drawImage(one, x, y, blockWidth, blockHeight);
+                    imageToDraw = one;
                     break;
                 case 2:
-                    canvasContext.drawImage(two, x, y, blockWidth, blockHeight);
+                    imageToDraw = two;
                     break;
                 case 3:
-                    canvasContext.drawImage(three, x, y, blockWidth, blockHeight);
+                    imageToDraw = three;
                     break;
                 case 4:
-                    canvasContext.drawImage(four, x, y, blockWidth, blockHeight);
+                    imageToDraw = four;
                     break;
+                case 5:
+                    imageToDraw = five;
+                    break;
+                case 6:
+                    imageToDraw = six;
+                    break;
+                case 7:
+                    imageToDraw = seven;
+                    break;
+                case 8:
+                    imageToDraw = eight;
+                    break;
+                case 9:
+                    imageToDraw = nine;
+                    break;
+
             }
-            
+            canvasContext.drawImage(imageToDraw, x, y, blockWidth, blockHeight);
         }
     }
 }
@@ -269,6 +282,16 @@ function getMousePosition(e) {
     mouse.y =  Math.floor(e.clientY - rect.top - root.scrollTop);
 }
 
+function checkUserGameTermination(didUserWin) {
+    if (!gamePlayable) {
+        alert("Hipster Scum! You lose!");
+        initBoard();
+    }
+    else if (didUserWin) {
+        alert("WINNN!");
+        initBoard();
+    }
+}
 function update(e) {
 
     getMousePosition(e);
@@ -280,21 +303,13 @@ function update(e) {
     }
 
     draw();
-    
-    if(!gamePlayable) {
-        alert("Hipster Scum! You lose!");
-        initBoard();
-    }
-    else if(didUserWin) {
-        alert("WINNN!");
-        initBoard();
-    }
+    checkUserGameTermination(didUserWin);
 }
 
 function checkMouseClick(e) {
     //if left or right mouse click
-	if(e.button == 0) {
-    	checkLocation();
+    if(e.button == 0) {
+        checkLocation();
     }
     else if(e.button == 2) {
         placeFlag();
@@ -302,8 +317,8 @@ function checkMouseClick(e) {
 }
 
 function placeFlag() {
-	var blockNum = clickedCell();
-	if(blockNum != null) {
+    var blockNum = clickedCell();
+    if(blockNum != null) {
         if(blocks[blockNum].isClickable) {
             blocks[blockNum].isFlag = !blocks[blockNum].isFlag;
             if(blocks[blockNum].isFlag) {
@@ -313,7 +328,7 @@ function placeFlag() {
                 flags--;
             }
         }
-	}
+    }
 }
 
 function checkLocation() {
@@ -325,7 +340,7 @@ function checkLocation() {
                 var adjacents = getAdjacents(blockNum);
                 blocks[blockNum].blockType = findRemainingMines(adjacents);
                 if (blocks[blockNum].blockType == notAMine) {
-                    expand(adjacents);
+                    invalidCellExpansion(adjacents);
                 }
             }
             else {
@@ -343,7 +358,7 @@ function clickedCell() {
         if(mouse.x < xPos || mouse.x > (xPos + blockWidth) || mouse.y < yPos || mouse.y > (yPos + blockHeight)) {
         }
         else {
-                return i;
+            return i;
         }
         xPos += blockWidth;
         if(xPos >= boardWidth) {
@@ -363,7 +378,7 @@ function checkWin() {
             break;
         }
     }
-    
+
     return win;
 }
 
@@ -379,7 +394,8 @@ function finishBoard() {
 function getAdjacents(index) {
     var adjacents = [];
     var newIndex = index - cols - 1;
-    if(index % cols != 0 && newIndex >= 0) {
+    var indexMod = index % cols;
+    if(indexMod != 0 && newIndex >= 0) {
         adjacents.push(newIndex);
     }
     newIndex = index - cols;
@@ -387,29 +403,29 @@ function getAdjacents(index) {
         adjacents.push(newIndex);
     }
     newIndex = index - cols + 1;
-    if(index % cols != cols - 1 && newIndex >= 0) {
+    if(indexMod != cols - 1 && newIndex >= 0) {
         adjacents.push(newIndex);
     }
-    
+
     newIndex = index - 1;
-    if(index % cols != 0 && newIndex >= 0) {
+    if(indexMod != 0 && newIndex >= 0) {
         adjacents.push(newIndex);
     }
     newIndex = index + 1;
-    if(index % cols != cols - 1 && newIndex < blocks.length) {
+    if(indexMod != cols - 1 && newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
-    
+
     newIndex = index + cols - 1;
-    if(index % cols != 0 && newIndex < blocks.length) {
-            adjacents.push(newIndex);
+    if(indexMod != 0 && newIndex < blocks.length) {
+        adjacents.push(newIndex);
     }
     newIndex = index + cols;
     if(newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
     newIndex = index + cols + 1;
-    if(index % cols != cols - 1 && newIndex < blocks.length) {
+    if(indexMod != cols - 1 && newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
 
@@ -426,12 +442,12 @@ function findRemainingMines(e) {
     return numMines;
 }
 
-function expand(e) {
+function invalidCellExpansion(e) {
     for(var i = 0; i < e.length; i++) {
         var adjacents = getAdjacents(e[i]);
         if(blocks[e[i]].isClickable && findRemainingMines(adjacents) == notAMine) {
             blocks[e[i]].isClickable = false;
-            expand(adjacents);
+            invalidCellExpansion(adjacents);
         }
         else {
             blocks[e[i]].isClickable = false;
