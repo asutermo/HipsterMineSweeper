@@ -63,7 +63,7 @@ function init() {
 
 function initImages() {
 	unknown = new Image();
-	unknown.src = "./images/starbucks_tower.png";
+	unknown.src = "./images/pbr.png";
 	mine = new Image();
 	mine.src = "./images/radio_tower.png";
 	invalid = new Image();
@@ -133,19 +133,10 @@ function buildBoardLayout() {
     }	
 }
 
-function buildBoard() {
-    
-    blockWidth = Math.floor(canvas.width / cols);
-    blockHeight = Math.floor(canvas.height / rows);
-    flagWidth = blockWidth/4;
-    flagHeight = blockHeight/4;
-    boardWidth = blockWidth * cols;
-    boardHeight = blockHeight * rows;
-    updateMinesLabel();
-
-    for(var i = 0; i < rows * cols; i++) {
+function setBlocksOnBoard() {
+    for (var i = 0; i < rows * cols; i++) {
         var block = {};
-        if(i >= minesOnBoard) {
+        if (i >= minesOnBoard) {
             block.blockType = notAMine;
             block.isMine = false;
         }
@@ -153,24 +144,38 @@ function buildBoard() {
             block.blockType = notAMine;
             block.isMine = true;
         }
-        block.isFlag = false;            
+        block.isFlag = false;
         block.isClickable = true;
         blocks.push(block);
     }
-    
-    blocks.shuffle();
-
+}
+function setBoardDetails() {
+    blockWidth = Math.floor(canvas.width / cols);
+    blockHeight = Math.floor(canvas.height / rows);
+    flagWidth = blockWidth / 4;
+    flagHeight = blockHeight / 4;
+    boardWidth = blockWidth * cols;
+    boardHeight = blockHeight * rows;
+}
+function setPositions() {
     var xPos = 0;
     var yPos = 0;
-    for(var i = 0; i < blocks.length; i++) {
-	    blocks[i].x = xPos;
-	    blocks[i].y = yPos;
-	    xPos += blockWidth;
-	    if(xPos >= canvas.boardWidth) {
+    for (var i = 0; i < blocks.length; i++) {
+        blocks[i].x = xPos;
+        blocks[i].y = yPos;
+        xPos += blockWidth;
+        if (xPos >= canvas.boardWidth) {
             xPos = 0;
             yPos += blockHeight;
-	    }
+        }
     }
+}
+function buildBoard() {
+    setBoardDetails();
+    updateMinesLabel();
+    setBlocksOnBoard();
+    blocks.shuffle();
+    setPositions();
 }
 
 function updateMinesLabel() {
@@ -205,11 +210,8 @@ function draw() {
 }
 
 function updateFlagsLabel() {
-    var html = "<img src='./images/"+flags+".png' width='"+flagWidth+"' height='"+flagHeight+"'/>"; 
-    document.getElementById("flags").innerHTML = html;   
+    document.getElementById("flags").innerHTML = "<img src='./images/" + flags + ".png' width='" + flagWidth + "' height='" + flagHeight + "'/>";
 }
-
-
 
 function checkCellValidity(e, x, y) {
 	if(e.isClickable) {
@@ -260,7 +262,7 @@ function cellIsInvalid(e, x, y) {
     }
 }
 
-function getMousePos(e) {
+function getMousePosition(e) {
     var rect = canvas.getBoundingClientRect();
     var root = document.documentElement;
     mouse.x = Math.floor(e.clientX - rect.left - root.scrollLeft);
@@ -269,9 +271,8 @@ function getMousePos(e) {
 
 function update(e) {
 
-    getMousePos(e);
+    getMousePosition(e);
     checkMouseClick(e);
-    
 
     var didUserWin = checkWin();
     if(didUserWin) {
@@ -298,7 +299,6 @@ function checkMouseClick(e) {
     else if(e.button == 2) {
         placeFlag();
     }
-    return;	
 }
 
 function placeFlag() {
@@ -307,10 +307,10 @@ function placeFlag() {
         if(blocks[blockNum].isClickable) {
             blocks[blockNum].isFlag = !blocks[blockNum].isFlag;
             if(blocks[blockNum].isFlag) {
-                    flags++;
+                flags++;
             }
             else {
-                    flags--;
+                flags--;
             }
         }
 	}
@@ -319,20 +319,17 @@ function placeFlag() {
 function checkLocation() {
     var blockNum = clickedCell();
     if(blockNum != null) {
-        if(blocks[blockNum].isFlag) {
-                return;
-        }
-        else {
+        if (!blocks[blockNum].isFlag) {
             blocks[blockNum].isClickable = false;
-            if(!blocks[blockNum].isMine) {
-                    var adjacents = getadjacents(blockNum);
-                    blocks[blockNum].blockType = findRemainingMines(adjacents);
-                    if(blocks[blockNum].blockType == notAMine) {
-                            expand(adjacents);
-                    }
+            if (!blocks[blockNum].isMine) {
+                var adjacents = getAdjacents(blockNum);
+                blocks[blockNum].blockType = findRemainingMines(adjacents);
+                if (blocks[blockNum].blockType == notAMine) {
+                    expand(adjacents);
+                }
             }
             else {
-                    gamePlayable = false;
+                gamePlayable = false;
             }
         }
     }
@@ -379,7 +376,7 @@ function finishBoard() {
     }
 }
 
-function getadjacents(index) {
+function getAdjacents(index) {
     var adjacents = [];
     var newIndex = index - cols - 1;
     if(index % cols != 0 && newIndex >= 0) {
@@ -419,26 +416,26 @@ function getadjacents(index) {
     return adjacents;
 }
 
-function findRemainingMines(arr) {
+function findRemainingMines(e) {
     var numMines = 0;
-    for(var i = 0; i < arr.length; i++) {
-        if(blocks[arr[i]].isMine) {
+    for(var i = 0; i < e.length; i++) {
+        if(blocks[e[i]].isMine) {
             numMines++;
         }
     }
     return numMines;
 }
 
-function expand(arr) {
-    for(var i = 0; i < arr.length; i++) {
-        var adjacents = getadjacents(arr[i]);
-        if(blocks[arr[i]].isClickable && findRemainingMines(adjacents) == notAMine) {
-            blocks[arr[i]].isClickable = false;
+function expand(e) {
+    for(var i = 0; i < e.length; i++) {
+        var adjacents = getAdjacents(e[i]);
+        if(blocks[e[i]].isClickable && findRemainingMines(adjacents) == notAMine) {
+            blocks[e[i]].isClickable = false;
             expand(adjacents);
         }
         else {
-            blocks[arr[i]].isClickable = false;
-            blocks[arr[i]].blockType = findRemainingMines(adjacents);
+            blocks[e[i]].isClickable = false;
+            blocks[e[i]].blockType = findRemainingMines(adjacents);
         }
     }
 }
