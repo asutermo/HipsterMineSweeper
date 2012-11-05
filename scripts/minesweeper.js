@@ -55,6 +55,7 @@ function init() {
     canvas = document.getElementById("game_canvas");
     canvasContext = canvas.getContext("2d");
     addDifficultyButtons();
+    addFlagCounter();
     initImages();
     initBoard();
     canvas.onmouseup = update;
@@ -65,6 +66,14 @@ function addDifficultyButtons() {
     document.getElementById('difficulty').innerHTML += "<input type='button' name='easy' value='Easy' onclick='setDifficulty(1)'/>";
     document.getElementById('difficulty').innerHTML += "<input type='button' name='medium' value='Medium' onclick='setDifficulty(2)'/>";
     document.getElementById('difficulty').innerHTML += "<input type='button' name='hard' value='Hard' onclick='setDifficulty(3)'/>";
+}
+
+function addFlagCounter() {
+    document.getElementById('flagDiv').innerHTML += "<span id='flagText' value='Flags Used: ' ></span>";
+    document.getElementById('flagDiv').innerHTML += "<span id='flags'></span> /";
+    document.getElementById('flagDiv').innerHTML += "<span id='mines'></span>";
+    document.getElementById('flagDiv').innerHTML += "<br />";
+    document.getElementById('flagDiv').innerHTML += "<br />";
 }
 
 function initImages() {
