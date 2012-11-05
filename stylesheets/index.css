@@ -4,6 +4,13 @@ body {
 	color:#000;
 	background:#a7a09a;
 	height: 100%;
+    -webkit-animation:change 5s infinite alternate;
+}
+
+@-webkit-keyframes change
+{
+from {background:#a7a09a;}
+to {background:#D1A894;}
 }
 
 h1 {
