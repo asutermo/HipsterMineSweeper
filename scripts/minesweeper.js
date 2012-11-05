@@ -127,6 +127,7 @@ function initBoard() {
     buildBoardLayout();
     buildBoard();
     draw();
+    printSolution();
 }
 
 //allow user to pick a difficulty
@@ -240,7 +241,16 @@ function draw() {
 }
 
 function updateFlagsLabel() {
-    document.getElementById("flags").innerHTML = "<img src='./images/" + flags + ".png' width='" + flagWidth + "' height='" + flagHeight + "'/>";
+    var html;
+    if (flags >= 10) {
+        var firstDigit = Math.floor(flags / 10)  ;
+        var secondDigit = flags % 10;
+        html = "<img src='./images/"+firstDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/><img src='./images/"+secondDigit+".png'width='"+flagWidth+"' height='"+flagHeight+"'/>";
+    }
+    else {
+        html = "<img src='./images/" + flags + ".png' width='" + flagWidth + "' height='" + flagHeight + "'/>";
+    }
+    document.getElementById("flags").innerHTML = html;
 }
 
 function checkCellValidity(e, x, y) {
@@ -317,7 +327,6 @@ function getMousePosition(e) {
 
 
 function update(e) {
-
     getMousePosition(e);
     checkMouseClick(e);
     var didUserWin = checkIfUserWon();
@@ -454,6 +463,18 @@ function invalidCellExpansion(e) {
             blocks[e[i]].blockType = findRemainingMines(adjacents);
         }
     }
+}
+
+function printSolution() {
+    document.getElementById('solution').innerHTML = "";
+    var print = "";
+    for (var i = 0; i < blocks.length; i++) {
+        print += blocks[i].isMine + " ";
+        if ( (i +1) % cols == 0)   {
+            print+= "<br />";
+        }
+    }
+    document.getElementById('solution').innerHTML += print;
 }
 
 function checkUserGameTermination(didUserWin) {
