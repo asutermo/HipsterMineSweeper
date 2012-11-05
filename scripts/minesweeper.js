@@ -1,11 +1,11 @@
 //Fisher-Yates shuffle algorithm
 Array.prototype.shuffle = function () {
-    var i = this.length, j, temp;
+    var i = this.length, floor, holder;
     while (--i) {
-        j = Math.floor(Math.random() * (i - 1));
-        temp = this[i];
-        this[i] = this[j];
-        this[j] = temp;
+        floor = Math.floor(Math.random() * (i - 1));
+        holder = this[i];
+        this[i] = this[floor];
+        this[floor] = holder;
     }
 };
 
@@ -48,7 +48,7 @@ var seven;
 var eight;
 var nine;
 
-//start the game when page loads
+//start the game when images load. and when page loads
 initImages();
 window.onload = init;
 
