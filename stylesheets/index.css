@@ -7,10 +7,16 @@ body {
 }
 
 h1 {
-	text-shadow: 5px 5px 5px #FF0000;
+	text-shadow: 5px 5px 5px #FF490C;
     -webkit-transform: translate(150px);
     -webkit-transform: scale(1,2);
 
+}
+
+input {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color:#FFF4D0;
 }
 
 #container {
