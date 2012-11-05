@@ -109,28 +109,30 @@ function setDifficulty(e) {
     initBoard();
 }
 
-
 //using Windows Minesweeper Rules
 function buildBoardLayout() {
-    switch(difficulty) {
-        case 1:
-            rows = cols = 10;
-            minesOnBoard = 10;
-            break;
-        case 2:
-            rows = cols = 16;
-            minesOnBoard = 40;
-            break;
-        case 3:
-            rows = 16;
-            cols = 30;
-            minesOnBoard = 99;
-            break;
+    if (difficulty == 1) {
+        rows = cols = 10;
+        minesOnBoard = 10;
+    }
+    else if (difficulty == 2) {
+        rows = cols = 16;
+        minesOnBoard = 40;
+    }
+    else if (difficulty == 3) {
+        rows = 16;
+        cols = 30;
+        minesOnBoard = 99;
+    }
+    else {
+        rows = cols = 10;
+        minesOnBoard = 10;
     }
 }
 
 function setBlocksOnBoard() {
-    for (var i = 0; i < rows * cols; i++) {
+    var dim = rows * cols;
+    for (var i = 0; i < dim; i++) {
         var block = {};
         if (i >= minesOnBoard) {
             block.blockType = notAMine;
@@ -154,15 +156,15 @@ function setBoardDetails() {
     boardHeight = blockHeight * rows;
 }
 function setPositions() {
-    var xPos = 0;
-    var yPos = 0;
+    var xPosition = 0;
+    var yPosition = 0;
     for (var i = 0; i < blocks.length; i++) {
-        blocks[i].x = xPos;
-        blocks[i].y = yPos;
-        xPos += blockWidth;
-        if (xPos >= canvas.boardWidth) {
-            xPos = 0;
-            yPos += blockHeight;
+        blocks[i].x = xPosition;
+        blocks[i].y = yPosition;
+        xPosition += blockWidth;
+        if (xPosition >= canvas.boardWidth) {
+            xPosition = 0;
+            yPosition += blockHeight;
         }
     }
 }
@@ -188,6 +190,14 @@ function updateMinesLabel() {
     document.getElementById("mines").innerHTML = html;
 }
 
+function updateDrawPosition(xPosition, yPosition) {
+    xPosition += blockWidth;
+    if (xPosition >= boardWidth) {
+        xPosition = 0;
+        yPosition += blockHeight;
+    }
+    return {xPosition:xPosition, yPosition:yPosition};
+}
 function draw() {
     updateFlagsLabel();
     canvasContext.clearRect(0, 0, boardWidth, boardHeight);
@@ -196,12 +206,9 @@ function draw() {
     for(var i = 0; i < blocks.length; i++) {
         var block = blocks[i];
         checkCellValidity(block, xPosition, yPosition);
-
-        xPosition += blockWidth;
-        if(xPosition >= boardWidth) {
-            xPosition = 0;
-            yPosition += blockHeight;
-        }
+        var __ret = updateDrawPosition(xPosition, yPosition);
+        xPosition = __ret.xPosition;
+        yPosition = __ret.yPosition;
     }
 }
 
@@ -292,16 +299,18 @@ function checkUserGameTermination(didUserWin) {
         initBoard();
     }
 }
+function checkIfUserWon() {
+    var didUserWin = checkWin();
+    if (didUserWin) {
+        finishBoard();
+    }
+    return didUserWin;
+}
 function update(e) {
 
     getMousePosition(e);
     checkMouseClick(e);
-
-    var didUserWin = checkWin();
-    if(didUserWin) {
-        finishBoard();
-    }
-
+    var didUserWin = checkIfUserWon();
     draw();
     checkUserGameTermination(didUserWin);
 }
@@ -455,4 +464,3 @@ function invalidCellExpansion(e) {
         }
     }
 }
-
