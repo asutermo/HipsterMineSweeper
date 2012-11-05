@@ -57,6 +57,7 @@ function init() {
     addDifficultyButtons();
     addFlagCounter();
     initImages();
+    initLegend();
     initBoard();
     canvas.onmouseup = update;
 }
@@ -84,7 +85,7 @@ function initImages() {
     invalid = new Image();
     invalid.src = "./images/starbucks_cup.png";
     flag = new Image();
-    flag.src = "./images/background.png";
+    flag.src = "./images/starbucks_tower.png";
     zero = new Image();
     zero.src = "./images/0.png";
     one  = new Image();
@@ -105,6 +106,13 @@ function initImages() {
     eight.src = "./images/8.png";
     nine = new Image();
     nine.src = "./images/9.png";
+}
+
+function initLegend() {
+    document.getElementById('legend').innerHTML += "<span>Unknown: </span><img src='./images/pbr.png'/>";
+    document.getElementById('legend').innerHTML += "<span>Flag: </span><img src='./images/starbucks_tower.png'/>";
+    document.getElementById('legend').innerHTML += "<span>Mine: </span><img src='./images/radio_tower.png'/>";
+    document.getElementById('legend').innerHTML += "<span>Unveiled: </span><img src='./images/starbucks_cup.png'/>";
 }
 
 function initBoard() {
