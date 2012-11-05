@@ -391,11 +391,10 @@ function clickedCell() {
 
 function getAdjacents(index) {
     var adjacents = [];
-    var newIndex = index - cols - 1;
     var indexMod = index % cols;
     var leftCheck = cols - 1;
     var rightCheck = cols + 1;
-
+    var newIndex = index - cols - 1;
     if(indexMod != 0 && newIndex >= 0) {
         adjacents.push(newIndex);
     }
