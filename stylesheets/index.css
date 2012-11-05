@@ -8,31 +8,27 @@ body {
 
 h1 {
 	text-shadow: 5px 5px 5px #FF0000;
+    -webkit-transform: translate(150px);
+    -webkit-transform: scale(1,2);
+
 }
 
 #container {
-	width:900px;
+	width:600px;
 	margin-left:auto;
 	margin-right:auto;
 }
-div.left, div.right {
+div.center {
 	border:1px solid;
 	border-radius:15px;
 	-webkit-border-radius:25px; 
-	background-color:#C0C0C0;	
+	background-color:#C0C0C0;
+    padding-bottom: 5px;
 }
-div.left {
-	width:30%;
-	margin-right:70%;
+div.center {
 	padding-left:15px;
 	text-align: center;
 	padding-top:10px;
-	padding-bottom:5px;
-}
-
-div.right {
-	margin-left:30%;
-	text-align:right;
 }
 
 #legend {
@@ -40,7 +36,7 @@ div.right {
 }
 
 #canvasDiv {
-	text-align: right;
+	text-align: center;
 	padding-top:15px;
 	padding-right:10px;
 }
