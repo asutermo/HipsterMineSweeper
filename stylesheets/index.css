@@ -3,7 +3,6 @@ body {
 	padding:0;
 	color:#000;
 	background:#a7a09a;
-	overflow:hidden;
 	height: 100%;
 }
 
@@ -26,6 +25,9 @@ div.left {
 	width:30%;
 	margin-right:70%;
 	padding-left:15px;
+	text-align: center;
+	padding-top:10px;
+	padding-bottom:5px;
 }
 
 div.right {
@@ -33,7 +35,12 @@ div.right {
 	text-align:right;
 }
 
+#legend {
+	text-align: center;
+}
 
 #canvasDiv {
 	text-align: right;
+	padding-top:15px;
+	padding-right:10px;
 }
