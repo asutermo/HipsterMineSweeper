@@ -49,9 +49,9 @@ var eight;
 var nine;
 
 //start the game when page loads
-window.onload = init;
+window.onload = initializeGame;
 
-function init() {
+function initializeGame() {
     canvas = document.getElementById("game_canvas");
     canvasContext = canvas.getContext("2d");
     addDifficultyButtons();
@@ -180,6 +180,7 @@ function setBoardDetails() {
     boardWidth = blockWidth * cols;
     boardHeight = blockHeight * rows;
 }
+
 function setPositions() {
     var xPosition = 0;
     var yPosition = 0;
@@ -313,23 +314,7 @@ function getMousePosition(e) {
     mouse.y =  Math.floor(e.clientY - rect.top - root.scrollTop);
 }
 
-function checkUserGameTermination(didUserWin) {
-    if (!gamePlayable) {
-        alert("Hipster Scum! You lose!");
-        initBoard();
-    }
-    else if (didUserWin) {
-        alert("WINNN!");
-        initBoard();
-    }
-}
-function checkIfUserWon() {
-    var didUserWin = checkWin();
-    if (didUserWin) {
-        finishBoard();
-    }
-    return didUserWin;
-}
+
 function update(e) {
 
     getMousePosition(e);
@@ -403,27 +388,6 @@ function clickedCell() {
     return null;
 }
 
-function checkWin() {
-    var win = true;
-    for(var i = 0; i < blocks.length; i++) {
-        if(blocks[i].isClickable && !blocks[i].isMine) {
-            win = false;
-            break;
-        }
-    }
-
-    return win;
-}
-
-function finishBoard() {
-    flags = minesOnBoard;
-    for(var i = 0; i < blocks.length; i++) {
-        if(blocks[i].isMine) {
-            blocks[i].isFlag = true;
-        }
-    }
-}
-
 function getAdjacents(index) {
     var adjacents = [];
     var newIndex = index - cols - 1;
@@ -489,3 +453,43 @@ function invalidCellExpansion(e) {
         }
     }
 }
+
+function checkUserGameTermination(didUserWin) {
+    if (!gamePlayable) {
+        alert("Hipster Scum! You lose!");
+        initBoard();
+    }
+    else if (didUserWin) {
+        alert("WINNN!");
+        initBoard();
+    }
+}
+function checkIfUserWon() {
+    var didUserWin = checkWin();
+    if (didUserWin) {
+        terminateBoard();
+    }
+    return didUserWin;
+}
+
+function checkWin() {
+    var win = true;
+    for(var i = 0; i < blocks.length; i++) {
+        if(blocks[i].isClickable && !blocks[i].isMine) {
+            win = false;
+            break;
+        }
+    }
+
+    return win;
+}
+
+function terminateBoard() {
+    flags = minesOnBoard;
+    for(var i = 0; i < blocks.length; i++) {
+        if(blocks[i].isMine) {
+            blocks[i].isFlag = true;
+        }
+    }
+}
+
