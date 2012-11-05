@@ -11,6 +11,7 @@ h1 {
 	-webkit-border-radius:25px; 
 	background-color:#C0C0C0;
 	width:650px;
+	text-align: center;
 }	
 
 #difficulty, #flagDiv {
@@ -18,6 +19,7 @@ h1 {
 	padding-top:15px;
 	text-align: center;
 }
+
 
 #legend {
 	height:150px;
@@ -36,7 +38,7 @@ h1 {
 	position:relative;
 	width:650px;
 	height:650px;
-	padding-left:50px;
+	padding-left:30px;
 	padding-top:50px;
-	background-color:#C0C0C0;
+	padding-right:20px;
 }

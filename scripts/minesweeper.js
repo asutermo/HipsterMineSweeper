@@ -49,14 +49,15 @@ var eight;
 var nine;
 
 //start the game when page loads
-window.onload = initializeGame;
+initImages();
+window.onload = init;
 
-function initializeGame() {
+function init() {
     canvas = document.getElementById("game_canvas");
     canvasContext = canvas.getContext("2d");
     addDifficultyButtons();
     addFlagCounter();
-    initImages();
+    //initImages();
     initLegend();
     initBoard();
     canvas.onmouseup = update;
