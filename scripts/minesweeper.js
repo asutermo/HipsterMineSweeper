@@ -393,6 +393,8 @@ function getAdjacents(index) {
     var adjacents = [];
     var newIndex = index - cols - 1;
     var indexMod = index % cols;
+    var leftCheck = cols - 1;
+    var rightCheck = cols + 1;
 
     if(indexMod != 0 && newIndex >= 0) {
         adjacents.push(newIndex);
@@ -401,8 +403,8 @@ function getAdjacents(index) {
     if(newIndex >= 0) {
         adjacents.push(newIndex);
     }
-    newIndex = index - cols + 1;
-    if(indexMod != cols - 1 && newIndex >= 0) {
+    newIndex = index - rightCheck;
+    if(indexMod != leftCheck && newIndex >= 0) {
         adjacents.push(newIndex);
     }
 
@@ -411,11 +413,11 @@ function getAdjacents(index) {
         adjacents.push(newIndex);
     }
     newIndex = index + 1;
-    if(indexMod != cols - 1 && newIndex < blocks.length) {
+    if(indexMod != leftCheck && newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
 
-    newIndex = index + cols - 1;
+    newIndex = index + leftCheck;
     if(indexMod != 0 && newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
@@ -423,8 +425,8 @@ function getAdjacents(index) {
     if(newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
-    newIndex = index + cols + 1;
-    if(indexMod != cols - 1 && newIndex < blocks.length) {
+    newIndex = index + rightCheck;
+    if(indexMod != leftCheck && newIndex < blocks.length) {
         adjacents.push(newIndex);
     }
 
