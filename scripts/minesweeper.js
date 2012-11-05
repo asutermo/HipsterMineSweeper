@@ -397,39 +397,37 @@ function clickedCell() {
 
 function getAdjacents(position) {
     var adjacents = [];
-    var newPosition = position - cols - 1;
-    if(position % cols != 0 && newPosition >= 0) {
-        adjacents.push(newPosition);
+    var position1 = position - cols - 1;
+    var position2 = position - cols;
+    var position3 = position - cols + 1;
+    var position4 = position - 1;
+    var position5 = position + 1;
+    var position6 = position + cols - 1;
+    var position7 = position + cols;
+    var position8 = position + cols + 1;
+    if(position % cols != 0 && position1 >= 0) {
+        adjacents.push(position1);
     }
-    newPosition = position - cols;
-    if(newPosition >= 0) {
-        adjacents.push(newPosition);
+    if(position2 >= 0) {
+        adjacents.push(position2);
     }
-    newPosition = position - cols + 1;
-    if(position % cols != cols - 1 && newPosition >= 0) {
-        adjacents.push(newPosition);
+    if(position % cols != cols - 1 && position3 >= 0) {
+        adjacents.push(position3);
     }
-
-    newPosition = position - 1;
-    if(position % cols != 0 && newPosition >= 0) {
-        adjacents.push(newPosition);
+    if(position % cols != 0 && position4 >= 0) {
+        adjacents.push(position4);
     }
-    newPosition = position + 1;
-    if(position % cols != cols - 1 && newPosition < blocks.length) {
-        adjacents.push(newPosition);
+    if(position % cols != cols - 1 && position5 < blocks.length) {
+        adjacents.push(position5);
     }
-
-    newPosition = position + cols - 1;
-    if(position % cols != 0 && newPosition < blocks.length) {
-        adjacents.push(newPosition);
+    if(position % cols != 0 && position6 < blocks.length) {
+        adjacents.push(position6);
     }
-    newPosition = position + cols;
-    if(newPosition < blocks.length) {
-        adjacents.push(newPosition);
+    if(position7 < blocks.length) {
+        adjacents.push(position7);
     }
-    newPosition = position + cols + 1;
-    if(position % cols != cols - 1 && newPosition < blocks.length) {
-        adjacents.push(newPosition);
+    if(position % cols != cols - 1 && position8 < blocks.length) {
+        adjacents.push(position8);
     }
 
     return adjacents;
