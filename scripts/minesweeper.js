@@ -61,9 +61,10 @@ function init() {
 }
 
 function addDifficultyButtons() {
-    document.getElementById('difficulty').innerHTML += "<input type='button' value='Easy' onclick='setDifficulty(1)'/>";
-    document.getElementById('difficulty').innerHTML += "<input type='button' value='Medium' onclick='setDifficulty(2)'/>";
-    document.getElementById('difficulty').innerHTML += "<input type='button' value='Hard' onclick='setDifficulty(3)'/>";
+    document.getElementById('difficulty').innerHTML += "<input type='button' name='reset' value='Reset' onclick='initBoard()'/>";
+    document.getElementById('difficulty').innerHTML += "<input type='button' name='easy' value='Easy' onclick='setDifficulty(1)'/>";
+    document.getElementById('difficulty').innerHTML += "<input type='button' name='medium' value='Medium' onclick='setDifficulty(2)'/>";
+    document.getElementById('difficulty').innerHTML += "<input type='button' name='hard' value='Hard' onclick='setDifficulty(3)'/>";
 }
 
 function initImages() {
