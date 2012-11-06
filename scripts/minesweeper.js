@@ -225,11 +225,13 @@ function updateDrawPosition(xPosition, yPosition) {
     }
     return {xPosition:xPosition, yPosition:yPosition};
 }
+
 function draw() {
     updateFlagsLabel();
     canvasContext.clearRect(0, 0, boardWidth, boardHeight);
     var xPosition = 0;
     var yPosition = 0;
+
     for(var i = 0; i < blocks.length; i++) {
         var block = blocks[i];
         checkCellValidity(block, xPosition, yPosition);
@@ -318,10 +320,10 @@ function cellIsInvalid(e, x, y) {
 }
 
 function getMousePosition(e) {
-    var rect = canvas.getBoundingClientRect();
-    var root = document.documentElement;
-    mouse.x = Math.floor(e.clientX - rect.left - root.scrollLeft);
-    mouse.y =  Math.floor(e.clientY - rect.top - root.scrollTop);
+    var bound = canvas.getBoundingClientRect();
+    var rooteElement = document.documentElement;
+    mouse.x = Math.floor(e.clientX - bound.left - rooteElement.scrollLeft);
+    mouse.y =  Math.floor(e.clientY - bound.top - rooteElement.scrollTop);
 }
 
 
@@ -356,6 +358,9 @@ function placeFlag() {
             }
         }
     }
+    else {
+        //do nothing
+    }
 }
 
 function checkLocation() {
@@ -375,6 +380,9 @@ function checkLocation() {
             }
         }
     }
+    else {
+        //do nothing
+    }
 }
 
 function clickedCell() {
@@ -382,7 +390,10 @@ function clickedCell() {
     var yPosition = 0;
 
     for(var i = 0; i < blocks.length; i++) {
-        if (!(mouse.x < xPosition || mouse.x > (xPosition + blockWidth) || mouse.y < yPosition || mouse.y > (yPosition + blockHeight))) {
+        if (!(mouse.x < xPosition
+            || mouse.x > (xPosition + blockWidth)
+            || mouse.y < yPosition
+            || mouse.y > (yPosition + blockHeight))) {
             return i;
         }
         xPosition += blockWidth;
@@ -521,4 +532,3 @@ function terminateBoard() {
         }
     }
 }
-
