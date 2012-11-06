@@ -430,29 +430,41 @@ function getAdjacents(position) {
     var position7 = __ret.position7;
     var position8 = __ret.position8;
 
-    if (position % cols != 0 && position1 >= 0) {
-        adjacents.push(position1);
+    if (position % cols != 0) {
+        if (position1 >= 0) {
+            adjacents.push(position1);
+        }
     }
     if (position2 >= 0) {
         adjacents.push(position2);
     }
-    if (position % cols != cols - 1 && position3 >= 0) {
-        adjacents.push(position3);
+    if (position % cols != cols - 1) {
+        if (position3 >= 0) {
+            adjacents.push(position3);
+        }
     }
-    if (position % cols != 0 && position4 >= 0) {
-        adjacents.push(position4);
+    if (position % cols != 0) {
+        if (position4 >= 0) {
+            adjacents.push(position4);
+        }
     }
-    if (position % cols != cols - 1 && position5 < blocks.length) {
-        adjacents.push(position5);
+    if (position % cols != cols - 1) {
+        if (position5 < blocks.length) {
+            adjacents.push(position5);
+        }
     }
-    if (position % cols != 0 && position6 < blocks.length) {
-        adjacents.push(position6);
+    if (position % cols != 0) {
+        if (position6 < blocks.length) {
+            adjacents.push(position6);
+        }
     }
     if (position7 < blocks.length) {
         adjacents.push(position7);
     }
-    if (position % cols != cols - 1 && position8 < blocks.length) {
-        adjacents.push(position8);
+    if (position % cols != cols - 1) {
+        if (position8 < blocks.length) {
+            adjacents.push(position8);
+        }
     }
 
     return adjacents;
@@ -495,15 +507,22 @@ function printSolution() {
 }
 
 function checkUserGameTermination(didUserWin) {
+    var startNewGame = false;
     if (!gamePlayable) {
-        alert("Hipster Scum! You lose!");
-        initBoard();
+        //alert("Hipster Scum! You lose!");
+        showSuccessToast();
+        startNewGame = true;
     }
     else if (didUserWin) {
-        alert("WINNN!");
+        showFailToast();
+        startNewGame = true;
+    }
+
+    if (startNewGame) {
         initBoard();
     }
 }
+
 function checkIfUserWon() {
     var didUserWin = checkWin();
     if (didUserWin) {
