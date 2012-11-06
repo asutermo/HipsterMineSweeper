@@ -395,8 +395,7 @@ function clickedCell() {
     return null;
 }
 
-function getAdjacents(position) {
-    var adjacents = [];
+function getPositions(position) {
     var position1 = position - cols - 1;
     var position2 = position - cols;
     var position3 = position - cols + 1;
@@ -405,29 +404,43 @@ function getAdjacents(position) {
     var position6 = position + cols - 1;
     var position7 = position + cols;
     var position8 = position + cols + 1;
+    return {position1:position1, position2:position2, position3:position3, position4:position4, position5:position5, position6:position6, position7:position7, position8:position8};
+}
+function getAdjacents(position) {
 
-    if(position % cols != 0 && position1 >= 0) {
+    var adjacents = [];
+    var __ret = getPositions(position);
+    var position1 = __ret.position1;
+    var position2 = __ret.position2;
+    var position3 = __ret.position3;
+    var position4 = __ret.position4;
+    var position5 = __ret.position5;
+    var position6 = __ret.position6;
+    var position7 = __ret.position7;
+    var position8 = __ret.position8;
+
+    if (position % cols != 0 && position1 >= 0) {
         adjacents.push(position1);
     }
-    if(position2 >= 0) {
+    if (position2 >= 0) {
         adjacents.push(position2);
     }
-    if(position % cols != cols - 1 && position3 >= 0) {
+    if (position % cols != cols - 1 && position3 >= 0) {
         adjacents.push(position3);
     }
-    if(position % cols != 0 && position4 >= 0) {
+    if (position % cols != 0 && position4 >= 0) {
         adjacents.push(position4);
     }
-    if(position % cols != cols - 1 && position5 < blocks.length) {
+    if (position % cols != cols - 1 && position5 < blocks.length) {
         adjacents.push(position5);
     }
-    if(position % cols != 0 && position6 < blocks.length) {
+    if (position % cols != 0 && position6 < blocks.length) {
         adjacents.push(position6);
     }
-    if(position7 < blocks.length) {
+    if (position7 < blocks.length) {
         adjacents.push(position7);
     }
-    if(position % cols != cols - 1 && position8 < blocks.length) {
+    if (position % cols != cols - 1 && position8 < blocks.length) {
         adjacents.push(position8);
     }
 
