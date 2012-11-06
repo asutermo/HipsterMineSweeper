@@ -405,6 +405,7 @@ function getAdjacents(position) {
     var position6 = position + cols - 1;
     var position7 = position + cols;
     var position8 = position + cols + 1;
+
     if(position % cols != 0 && position1 >= 0) {
         adjacents.push(position1);
     }
