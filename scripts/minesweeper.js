@@ -514,10 +514,13 @@ function checkIfUserWon() {
 
 function checkWin() {
     var win = true;
+
     for(var i = 0; i < blocks.length; i++) {
-        if(blocks[i].Clickable && !blocks[i].Mine) {
-            win = false;
-            break;
+        if(blocks[i].Clickable) {
+            if (!blocks[i].Mine) {
+                win = false;
+                break;
+            }
         }
     }
 
